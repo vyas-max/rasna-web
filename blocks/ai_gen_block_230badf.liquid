@@ -1,0 +1,1230 @@
+{% doc %}
+  @prompt
+    Create a centered section titled ‘Fueling Sports Nutrition’ with a short subtitle below. Add a horizontal slider of 7 vertical 9:16 videos, each tagged with a related product at the bottom showing a small product image, name, price, and an orange ‘View’ button. Enable arrow, thumb, and mouse drag scrolling, and ensure smooth stacking or swipe behavior on mobile without overflow, Adjust the mobile layout so each product tag below the video has enough height for the full product image, name, price, and ‘View’ button to display clearly. Make text wrap naturally, keep spacing balanced, and prevent any content from being cut off or overlapping, On mobile view, adjust the product tag layout so the product image takes about 25–30% of the width on the left, and the text details with the orange ‘View’ button fit neatly on the right. Keep everything vertically centered, maintain clear spacing, and ensure no overlap or overflow, On mobile view, center-align the headline and subtitle fully within the viewport. Ensure they resize or wrap automatically without clipping or cutting off text, maintain even side padding, and keep consistent spacing above the video slider, Hide the navigation arrows completely on mobile view. On desktop view, make the video slider full width so the videos span from edge to edge of the viewport with no side gaps, maintaining equal spacing between cards and smooth scroll behavior, i need the video field to accept shopify uploaded videos, I want a volume audio On and off Button On the Bottom left side of every single video. By default it will be off so the video is mute, The volume on and off button works perfect But it is not clearly Visible and understandable what is happening Can you change the look of the Volume button So it strikes Out completely when it is mute
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-video-slider-{{ ai_gen_id }} {
+    padding: {{ block.settings.section_padding_top }}px 0 {{ block.settings.section_padding_bottom }}px;
+    background-color: {{ block.settings.background_color }};
+  }
+
+  .ai-video-slider-container-{{ ai_gen_id }} {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .ai-video-slider-header-{{ ai_gen_id }} {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 0 20px;
+  }
+
+  .ai-video-slider-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.title_size }}px;
+    color: {{ block.settings.title_color }};
+    margin: 0 0 12px;
+    text-transform: uppercase;
+    font-family: var(--font-heading-family);
+    line-height: 1.2;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .ai-video-slider-subtitle-{{ ai_gen_id }} {
+    font-size: {{ block.settings.subtitle_size }}px;
+    color: {{ block.settings.subtitle_color }};
+    margin: 0;
+    line-height: 1.5;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .ai-video-slider-wrapper-{{ ai_gen_id }} {
+    position: relative;
+    overflow: hidden;
+ 
+  }
+
+  .ai-video-slider-track-{{ ai_gen_id }} {
+    display: flex;
+    gap: {{ block.settings.video_gap }}px;
+    transition: transform 0.3s ease;
+    cursor: grab;
+    user-select: none;
+    padding: 0;
+  }
+
+  .ai-video-slider-track-{{ ai_gen_id }}.dragging {
+    cursor: grabbing;
+    transition: none;
+  }
+
+  .ai-video-slider-item-{{ ai_gen_id }} {
+    flex: 0 0 auto;
+    width: {{ block.settings.video_width }}px;
+    position: relative;
+  }
+
+  .ai-video-slider-video-wrapper-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 9 / 16;
+    background-color: #000;
+    border-radius: {{ block.settings.video_border_radius }}px;
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+
+  .ai-video-slider-video-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    cursor: pointer;
+  }
+
+  @media screen and (min-width: 750px) {
+    .ai-video-slider-video-wrapper-{{ ai_gen_id }}:hover .ai-video-slider-video-{{ ai_gen_id }} {
+      opacity: 0.95;
+    }
+
+    .ai-video-slider-video-wrapper-{{ ai_gen_id }} {
+      cursor: pointer;
+    }
+  }
+
+  .ai-video-slider-video-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 14px;
+  }
+
+  .ai-video-slider-mute-button-{{ ai_gen_id }} {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    width: 40px;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.95);
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .ai-video-slider-mute-button-{{ ai_gen_id }}:hover {
+    background-color: rgba(255, 255, 255, 1);
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  .ai-video-slider-mute-button-{{ ai_gen_id }}.muted {
+    background-color: rgba(220, 38, 38, 0.95);
+    border-color: rgba(220, 38, 38, 0.3);
+  }
+
+  .ai-video-slider-mute-button-{{ ai_gen_id }}.muted:hover {
+    background-color: rgba(220, 38, 38, 1);
+  }
+
+  .ai-video-slider-mute-icon-{{ ai_gen_id }} {
+    width: 22px;
+    height: 22px;
+    position: relative;
+  }
+
+  .ai-video-slider-mute-icon-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    fill: #1f2937;
+    transition: fill 0.3s ease;
+  }
+
+  .ai-video-slider-mute-button-{{ ai_gen_id }}.muted .ai-video-slider-mute-icon-{{ ai_gen_id }} svg {
+    fill: #ffffff;
+  }
+
+  .ai-video-slider-mute-slash-{{ ai_gen_id }} {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 28px;
+    height: 2px;
+    background-color: #ffffff;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 2px;
+  }
+
+  .ai-video-slider-mute-button-{{ ai_gen_id }}.muted .ai-video-slider-mute-slash-{{ ai_gen_id }} {
+    opacity: 1;
+  }
+
+  .ai-video-slider-product-card-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background-color: {{ block.settings.card_background }};
+    border-radius: {{ block.settings.card_border_radius }}px;
+    border: 1px solid {{ block.settings.card_border_color }};
+  }
+
+  .ai-video-slider-product-image-{{ ai_gen_id }} {
+    width: 60px;
+    height: 60px;
+    flex-shrink: 0;
+    border-radius: 4px;
+    overflow: hidden;
+    background-color: #f5f5f5;
+  }
+
+  .ai-video-slider-product-image-{{ ai_gen_id }} img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .ai-video-slider-product-info-{{ ai_gen_id }} {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .ai-video-slider-product-name-{{ ai_gen_id }} {
+    font-size: 14px;
+    font-weight: 600;
+    color: {{ block.settings.product_text_color }};
+    margin: 0 0 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    line-height: 1.4;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .ai-video-slider-product-price-{{ ai_gen_id }} {
+    font-size: 14px;
+    color: {{ block.settings.product_text_color }};
+    margin: 0;
+  }
+
+  .ai-video-slider-view-button-{{ ai_gen_id }} {
+    padding: 8px 16px;
+    background-color: {{ block.settings.button_color }};
+    color: {{ block.settings.button_text_color }};
+    border: none;
+    border-radius: {{ block.settings.button_border_radius }}px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    cursor: pointer;
+    white-space: nowrap;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+  }
+
+  .ai-video-slider-view-button-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.button_hover_color }};
+  }
+
+  .ai-video-slider-arrow-{{ ai_gen_id }} {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48px;
+    height: 48px;
+    background-color: {{ block.settings.arrow_background }};
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    transition: background-color 0.3s ease, opacity 0.3s ease;
+    opacity: 0.9;
+  }
+
+  .ai-video-slider-arrow-{{ ai_gen_id }}:hover {
+    opacity: 1;
+    background-color: {{ block.settings.arrow_hover_background }};
+  }
+
+  .ai-video-slider-arrow-{{ ai_gen_id }}:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  .ai-video-slider-arrow-{{ ai_gen_id }}.prev {
+    left: 20px;
+  }
+
+  .ai-video-slider-arrow-{{ ai_gen_id }}.next {
+    right: 20px;
+  }
+
+  .ai-video-slider-arrow-{{ ai_gen_id }} svg {
+    width: 24px;
+    height: 24px;
+    stroke: {{ block.settings.arrow_color }};
+  }
+
+  .ai-video-slider-thumbs-{{ ai_gen_id }} {
+    display: none;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 24px;
+  }
+
+  .ai-video-slider-thumb-{{ ai_gen_id }} {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: {{ block.settings.thumb_color }};
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+
+  .ai-video-slider-thumb-{{ ai_gen_id }}.active {
+    background-color: {{ block.settings.thumb_active_color }};
+    transform: scale(1.3);
+  }
+
+  @media screen and (min-width: 750px) {
+    .ai-video-slider-container-{{ ai_gen_id }} {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 60px;
+    }
+
+    .ai-video-slider-wrapper-{{ ai_gen_id }} {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      margin: 0;
+    }
+
+    .ai-video-slider-track-{{ ai_gen_id }} {
+      padding: 0;
+    }
+
+    .ai-video-slider-arrow-{{ ai_gen_id }} {
+      display: flex;
+    }
+
+    .ai-video-slider-thumbs-{{ ai_gen_id }} {
+      display: none;
+    }
+
+    .ai-video-slider-item-{{ ai_gen_id }}:first-child {
+      margin-left: 0;
+    }
+
+    .ai-video-slider-item-{{ ai_gen_id }}:last-child {
+      margin-right: 0;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-video-slider-{{ ai_gen_id }} {
+      padding: {{ block.settings.section_padding_top | times: 0.6 }}px 0 {{ block.settings.section_padding_bottom | times: 0.6 }}px;
+    }
+
+    .ai-video-slider-container-{{ ai_gen_id }} {
+      padding: 0;
+    }
+
+    .ai-video-slider-wrapper-{{ ai_gen_id }} {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      max-width: 100vw;
+    }
+
+    .ai-video-slider-header-{{ ai_gen_id }} {
+      margin-bottom: 28px;
+      padding: 0 16px;
+      text-align: center;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .ai-video-slider-title-{{ ai_gen_id }} {
+      font-size: {{ block.settings.title_size | times: 0.65 }}px;
+      line-height: 1.3;
+      margin: 0 0 10px;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      hyphens: auto;
+      max-width: 100%;
+    }
+
+    .ai-video-slider-subtitle-{{ ai_gen_id }} {
+      font-size: {{ block.settings.subtitle_size | times: 0.85 }}px;
+      line-height: 1.5;
+      margin: 0;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      max-width: 100%;
+    }
+
+    .ai-video-slider-track-{{ ai_gen_id }} {
+      gap: 16px;
+      padding: 0 16px;
+    }
+
+    .ai-video-slider-item-{{ ai_gen_id }} {
+      width: 75%;
+      max-width: 280px;
+    }
+
+    .ai-video-slider-video-wrapper-{{ ai_gen_id }} {
+      margin-bottom: 12px;
+    }
+
+    .ai-video-slider-mute-button-{{ ai_gen_id }} {
+      width: 36px;
+      height: 36px;
+      bottom: 10px;
+      left: 10px;
+    }
+
+    .ai-video-slider-mute-icon-{{ ai_gen_id }} {
+      width: 20px;
+      height: 20px;
+    }
+
+    .ai-video-slider-mute-slash-{{ ai_gen_id }} {
+      width: 26px;
+      height: 2px;
+    }
+
+    .ai-video-slider-product-card-{{ ai_gen_id }} {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding: 10px;
+      gap: 10px;
+      min-height: 80px;
+    }
+
+    .ai-video-slider-product-image-{{ ai_gen_id }} {
+      width: 28%;
+      height: auto;
+      aspect-ratio: 1 / 1;
+      flex-shrink: 0;
+    }
+
+    .ai-video-slider-product-content-{{ ai_gen_id }} {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    .ai-video-slider-product-info-{{ ai_gen_id }} {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .ai-video-slider-product-name-{{ ai_gen_id }} {
+      font-size: 12px;
+      line-height: 1.3;
+      margin: 0 0 4px;
+      white-space: normal;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+
+    .ai-video-slider-product-price-{{ ai_gen_id }} {
+      font-size: 13px;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .ai-video-slider-view-button-{{ ai_gen_id }} {
+      padding: 6px 12px;
+      font-size: 11px;
+      text-align: center;
+      display: inline-block;
+      align-self: flex-start;
+    }
+
+    .ai-video-slider-arrow-{{ ai_gen_id }} {
+      display: none;
+    }
+
+    .ai-video-slider-wrapper-{{ ai_gen_id }} {
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .ai-video-slider-wrapper-{{ ai_gen_id }}::-webkit-scrollbar {
+      display: none;
+    }
+
+    .ai-video-slider-thumbs-{{ ai_gen_id }} {
+      display: flex;
+    }
+  }
+{% endstyle %}
+
+<video-slider-{{ ai_gen_id }} class="ai-video-slider-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-video-slider-container-{{ ai_gen_id }}">
+    <div class="ai-video-slider-header-{{ ai_gen_id }}">
+      {% if block.settings.title != blank %}
+        <h2 class="ai-video-slider-title-{{ ai_gen_id }}">{{ block.settings.title }}</h2>
+      {% endif %}
+      {% if block.settings.subtitle != blank %}
+        <p class="ai-video-slider-subtitle-{{ ai_gen_id }}">{{ block.settings.subtitle }}</p>
+      {% endif %}
+    </div>
+
+    <div class="ai-video-slider-wrapper-{{ ai_gen_id }}">
+      {% if block.settings.show_arrows %}
+        <button class="ai-video-slider-arrow-{{ ai_gen_id }} prev" aria-label="Previous">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+      {% endif %}
+
+      <div class="ai-video-slider-track-{{ ai_gen_id }}">
+        {% for i in (1..7) %}
+          {% liquid
+            assign video_key = 'video_' | append: i
+            assign product_key = 'product_' | append: i
+            assign video = block.settings[video_key]
+            assign product = block.settings[product_key]
+          %}
+
+          <div class="ai-video-slider-item-{{ ai_gen_id }}">
+            <div class="ai-video-slider-video-wrapper-{{ ai_gen_id }}">
+              {% if video != blank %}
+                {% if video.sources[1].url %}
+                  <video
+                    class="ai-video-slider-video-{{ ai_gen_id }}"
+                    src="{{ video.sources[1].url }}"
+                    loop
+                    muted
+                    playsinline
+                    data-video-index="{{ forloop.index0 }}"
+                  ></video>
+                {% else %}
+                  <video
+                    class="ai-video-slider-video-{{ ai_gen_id }}"
+                    src="{{ video.sources[0].url }}"
+                    loop
+                    muted
+                    playsinline
+                    data-video-index="{{ forloop.index0 }}"
+                  ></video>
+                {% endif %}
+                <button class="ai-video-slider-mute-button-{{ ai_gen_id }} muted" data-video-index="{{ forloop.index0 }}" aria-label="Toggle mute">
+                  <div class="ai-video-slider-mute-icon-{{ ai_gen_id }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                      <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+                      <path d="M15.54 8.46a5 5 0 0 1 0 7.07M19.07 4.93a10 10 0 0 1 0 14.14"/>
+                    </svg>
+                    <div class="ai-video-slider-mute-slash-{{ ai_gen_id }}"></div>
+                  </div>
+                </button>
+              {% else %}
+                <div class="ai-video-slider-video-placeholder-{{ ai_gen_id }}">
+                  Video {{ i }}
+                </div>
+              {% endif %}
+            </div>
+
+            <div class="ai-video-slider-product-card-{{ ai_gen_id }}">
+              {% if product != blank %}
+                <div class="ai-video-slider-product-image-{{ ai_gen_id }}">
+                  {% if product.featured_image %}
+                    <img
+                      src="{{ product.featured_image | image_url: width: 300 }}"
+                      alt="{{ product.featured_image.alt | escape }}"
+                      loading="lazy"
+                      width="300"
+                      height="300"
+                    >
+                  {% else %}
+                    {{ 'product-1' | placeholder_svg_tag }}
+                  {% endif %}
+                </div>
+                <div class="ai-video-slider-product-content-{{ ai_gen_id }}">
+                  <div class="ai-video-slider-product-info-{{ ai_gen_id }}">
+                    <h3 class="ai-video-slider-product-name-{{ ai_gen_id }}">{{ product.title }}</h3>
+                    <p class="ai-video-slider-product-price-{{ ai_gen_id }}">{{ product.price | money }}</p>
+                  </div>
+                  <a href="{{ product.url }}" class="ai-video-slider-view-button-{{ ai_gen_id }}">View</a>
+                </div>
+              {% else %}
+                <div class="ai-video-slider-product-image-{{ ai_gen_id }}">
+                  {{ 'product-1' | placeholder_svg_tag }}
+                </div>
+                <div class="ai-video-slider-product-content-{{ ai_gen_id }}">
+                  <div class="ai-video-slider-product-info-{{ ai_gen_id }}">
+                    <h3 class="ai-video-slider-product-name-{{ ai_gen_id }}">Product {{ i }}</h3>
+                    <p class="ai-video-slider-product-price-{{ ai_gen_id }}">₹0.00</p>
+                  </div>
+                  <span class="ai-video-slider-view-button-{{ ai_gen_id }}">View</span>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      {% if block.settings.show_arrows %}
+        <button class="ai-video-slider-arrow-{{ ai_gen_id }} next" aria-label="Next">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      {% endif %}
+    </div>
+
+    {% if block.settings.show_thumbs %}
+      <div class="ai-video-slider-thumbs-{{ ai_gen_id }}">
+        {% for i in (1..7) %}
+          <button class="ai-video-slider-thumb-{{ ai_gen_id }}" data-index="{{ forloop.index0 }}" aria-label="Go to slide {{ i }}"></button>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</video-slider-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class VideoSlider{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.currentIndex = 0;
+        this.isDragging = false;
+        this.startX = 0;
+        this.currentTranslate = 0;
+        this.prevTranslate = 0;
+        this.animationID = null;
+      }
+
+      connectedCallback() {
+        this.track = this.querySelector('.ai-video-slider-track-{{ ai_gen_id }}');
+        this.items = this.querySelectorAll('.ai-video-slider-item-{{ ai_gen_id }}');
+        this.wrapper = this.querySelector('.ai-video-slider-wrapper-{{ ai_gen_id }}');
+        this.prevButton = this.querySelector('.ai-video-slider-arrow-{{ ai_gen_id }}.prev');
+        this.nextButton = this.querySelector('.ai-video-slider-arrow-{{ ai_gen_id }}.next');
+        this.thumbs = this.querySelectorAll('.ai-video-slider-thumb-{{ ai_gen_id }}');
+        this.videos = this.querySelectorAll('.ai-video-slider-video-{{ ai_gen_id }}');
+        this.muteButtons = this.querySelectorAll('.ai-video-slider-mute-button-{{ ai_gen_id }}');
+
+        this.itemWidth = this.items[0].offsetWidth;
+        this.gap = this.getGap();
+
+        this.setupEventListeners();
+        this.updateSlider();
+      }
+
+      getGap() {
+        if (window.innerWidth <= 749) {
+          return 16;
+        }
+        return {{ block.settings.video_gap }};
+      }
+
+      getVisibleCount() {
+        const wrapperWidth = this.wrapper ? this.wrapper.offsetWidth : 0;
+        const slideWidth = this.itemWidth + this.gap;
+        const count = Math.floor((wrapperWidth + this.gap) / slideWidth);
+        return Math.max(1, count || 1);
+      }
+
+      getMaxIndex() {
+        const visible = this.getVisibleCount();
+        return Math.max(0, this.items.length - visible);
+      }
+
+      setupEventListeners() {
+        if (this.prevButton) {
+          this.prevButton.addEventListener('click', () => this.prev());
+        }
+
+        if (this.nextButton) {
+          this.nextButton.addEventListener('click', () => this.next());
+        }
+
+        this.thumbs.forEach((thumb, index) => {
+          thumb.addEventListener('click', () => this.goToSlide(index));
+        });
+
+        this.muteButtons.forEach((button) => {
+          button.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const videoIndex = button.getAttribute('data-video-index');
+            this.toggleMute(videoIndex, button);
+          });
+        });
+
+        this.track.addEventListener('mousedown', this.dragStart.bind(this));
+        this.track.addEventListener('touchstart', this.dragStart.bind(this));
+        this.track.addEventListener('mouseup', this.dragEnd.bind(this));
+        this.track.addEventListener('touchend', this.dragEnd.bind(this));
+        this.track.addEventListener('mousemove', this.drag.bind(this));
+        this.track.addEventListener('touchmove', this.drag.bind(this));
+        this.track.addEventListener('mouseleave', this.dragEnd.bind(this));
+
+        // Desktop video hover and click events
+        this.setupVideoEvents();
+
+        window.addEventListener('resize', () => {
+          this.itemWidth = this.items[0].offsetWidth;
+          this.gap = this.getGap();
+          // Ensure current index stays within new bounds on resize
+          const maxIndex = this.getMaxIndex();
+          if (this.currentIndex > maxIndex) {
+            this.currentIndex = 0;
+          }
+          this.updateSlider();
+        });
+      }
+
+      setupVideoEvents() {
+        this.videos.forEach((video, index) => {
+          const wrapper = video.closest('.ai-video-slider-video-wrapper-{{ ai_gen_id }}');
+
+          // Desktop hover events
+          wrapper.addEventListener('mouseenter', () => {
+            if (window.innerWidth > 749) {
+              this.playVideo(index);
+            }
+          });
+
+          wrapper.addEventListener('mouseleave', () => {
+            if (window.innerWidth > 749) {
+              this.pauseVideo(index);
+            }
+          });
+
+          // Click events for both mobile and desktop
+          wrapper.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (window.innerWidth > 749) {
+              // Desktop behavior: navigate to slide and play/pause
+              if (index === this.currentIndex) {
+                if (video.paused) {
+                  this.playVideo(index);
+                } else {
+                  this.pauseVideo(index);
+                }
+              } else {
+                this.goToSlide(index);
+              }
+            } else {
+              // Mobile behavior: just play/pause the clicked video
+              if (video.paused) {
+                this.playVideo(index);
+              } else {
+                this.pauseVideo(index);
+              }
+            }
+          });
+        });
+      }
+
+      playVideo(index) {
+        const video = this.videos[index];
+        if (video) {
+          video.play().catch(e => console.log('Video play failed:', e));
+        }
+      }
+
+      pauseVideo(index) {
+        const video = this.videos[index];
+        if (video) {
+          video.pause();
+        }
+      }
+
+      toggleMute(videoIndex, button) {
+        const video = this.querySelector(`.ai-video-slider-video-{{ ai_gen_id }}[data-video-index="${videoIndex}"]`);
+        
+        if (video && button) {
+          video.muted = !video.muted;
+          
+          if (video.muted) {
+            button.classList.add('muted');
+            button.setAttribute('aria-label', 'Unmute video');
+          } else {
+            button.classList.remove('muted');
+            button.setAttribute('aria-label', 'Mute video');
+          }
+        }
+      }
+
+      dragStart(event) {
+        this.isDragging = true;
+        this.startX = this.getPositionX(event);
+        this.track.classList.add('dragging');
+        this.pauseAllVideos();
+      }
+
+      drag(event) {
+        if (!this.isDragging) return;
+        const currentPosition = this.getPositionX(event);
+        this.currentTranslate = this.prevTranslate + currentPosition - this.startX;
+
+        // Constrain the dragging to prevent going beyond boundaries
+        const maxTranslate = 0; // Can't go past the first item
+        const minTranslate = -(this.getMaxIndex() * (this.itemWidth + this.gap)); // Can't go past the last visible position
+
+        this.currentTranslate = Math.max(minTranslate, Math.min(maxTranslate, this.currentTranslate));
+      }
+
+      dragEnd() {
+        if (!this.isDragging) return;
+        this.isDragging = false;
+        this.track.classList.remove('dragging');
+
+        // Calculate the nearest slide based on current translate position
+        const slideWidth = this.itemWidth + this.gap;
+        const currentOffset = Math.abs(this.currentTranslate);
+        this.currentIndex = Math.round(currentOffset / slideWidth);
+
+        // Ensure we stay within bounds
+        this.currentIndex = Math.max(0, Math.min(this.currentIndex, this.getMaxIndex()));
+
+        this.updateSlider();
+        this.playCurrentVideo();
+      }
+
+      getPositionX(event) {
+        return event.type.includes('mouse') ? event.pageX : event.touches[0].clientX;
+      }
+
+      prev() {
+        if (this.currentIndex > 0) {
+          this.currentIndex--;
+          this.updateSlider();
+          this.playCurrentVideo();
+        }
+      }
+
+      next() {
+        const maxIndex = this.getMaxIndex();
+        if (this.currentIndex < maxIndex) {
+          this.currentIndex++;
+        } else {
+          this.currentIndex = 0;
+        }
+        this.updateSlider();
+        this.playCurrentVideo();
+      }
+
+      goToSlide(index) {
+        this.currentIndex = index;
+        this.updateSlider();
+        this.playCurrentVideo();
+      }
+
+      updateSlider() {
+        // Ensure currentIndex stays within bounds
+        this.currentIndex = Math.max(0, Math.min(this.currentIndex, this.getMaxIndex()));
+
+        const translateX = -(this.currentIndex * (this.itemWidth + this.gap));
+        this.track.style.transform = `translateX(${translateX}px)`;
+        this.prevTranslate = translateX;
+        this.currentTranslate = translateX;
+
+        if (this.prevButton) {
+          this.prevButton.disabled = this.currentIndex === 0;
+        }
+
+        if (this.nextButton) {
+          this.nextButton.disabled = false;
+        }
+
+        this.thumbs.forEach((thumb, index) => {
+          if (index === this.currentIndex) {
+            thumb.classList.add('active');
+          } else {
+            thumb.classList.remove('active');
+          }
+        });
+      }
+
+      playCurrentVideo() {
+        this.pauseAllVideos();
+        // Videos should only play on hover/click, not automatically on slide change
+      }
+
+      pauseAllVideos() {
+        this.videos.forEach(video => {
+          video.pause();
+        });
+      }
+    }
+
+    customElements.define('video-slider-{{ ai_gen_id }}', VideoSlider{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Video slider",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section header"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Fueling Sports Nutrition"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Discover our premium products in action"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Title size",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Subtitle size",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#a42325"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Video 1"
+    },
+    {
+      "type": "video",
+      "id": "video_1",
+      "label": "Video"
+    },
+    {
+      "type": "product",
+      "id": "product_1",
+      "label": "Product"
+    },
+    {
+      "type": "header",
+      "content": "Video 2"
+    },
+    {
+      "type": "video",
+      "id": "video_2",
+      "label": "Video"
+    },
+    {
+      "type": "product",
+      "id": "product_2",
+      "label": "Product"
+    },
+    {
+      "type": "header",
+      "content": "Video 3"
+    },
+    {
+      "type": "video",
+      "id": "video_3",
+      "label": "Video"
+    },
+    {
+      "type": "product",
+      "id": "product_3",
+      "label": "Product"
+    },
+    {
+      "type": "header",
+      "content": "Video 4"
+    },
+    {
+      "type": "video",
+      "id": "video_4",
+      "label": "Video"
+    },
+    {
+      "type": "product",
+      "id": "product_4",
+      "label": "Product"
+    },
+    {
+      "type": "header",
+      "content": "Video 5"
+    },
+    {
+      "type": "video",
+      "id": "video_5",
+      "label": "Video"
+    },
+    {
+      "type": "product",
+      "id": "product_5",
+      "label": "Product"
+    },
+    {
+      "type": "header",
+      "content": "Video 6"
+    },
+    {
+      "type": "video",
+      "id": "video_6",
+      "label": "Video"
+    },
+    {
+      "type": "product",
+      "id": "product_6",
+      "label": "Product"
+    },
+    {
+      "type": "header",
+      "content": "Video 7"
+    },
+    {
+      "type": "video",
+      "id": "video_7",
+      "label": "Video"
+    },
+    {
+      "type": "product",
+      "id": "product_7",
+      "label": "Product"
+    },
+    {
+      "type": "header",
+      "content": "Slider settings"
+    },
+    {
+      "type": "range",
+      "id": "video_width",
+      "min": 200,
+      "max": 400,
+      "step": 10,
+      "unit": "px",
+      "label": "Video width",
+      "default": 280
+    },
+    {
+      "type": "range",
+      "id": "video_gap",
+      "min": 10,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Gap between videos",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "video_border_radius",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Video border radius",
+      "default": 12
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrows",
+      "label": "Show navigation arrows",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_thumbs",
+      "label": "Show thumbnail dots",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Product card"
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Border color",
+      "default": "#e6e6e6"
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "min": 0,
+      "max": 16,
+      "step": 2,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 8
+    },
+    {
+      "type": "color",
+      "id": "product_text_color",
+      "label": "Text color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "View button"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Background",
+      "default": "#ff6600"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_color",
+      "label": "Hover background",
+      "default": "#e55a00"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "Navigation arrows"
+    },
+    {
+      "type": "color",
+      "id": "arrow_background",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "arrow_hover_background",
+      "label": "Hover background",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "color",
+      "id": "arrow_color",
+      "label": "Icon color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Thumbnail dots"
+    },
+    {
+      "type": "color",
+      "id": "thumb_color",
+      "label": "Dot color",
+      "default": "#cccccc"
+    },
+    {
+      "type": "color",
+      "id": "thumb_active_color",
+      "label": "Active dot color",
+      "default": "#ff6600"
+    },
+    {
+      "type": "header",
+      "content": "Section spacing"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 60
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Video slider"
+    }
+  ]
+}
+{% endschema %}

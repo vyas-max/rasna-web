@@ -1,0 +1,864 @@
+{% assign block_settings = block.settings %}
+
+<div class="discount-codes-wrapper" data-discount-codes style="text-align: {{ block_settings.title_alignment }};">
+  {% if block_settings.show_title and block_settings.title != blank %}
+    <div class="discount-codes-header">
+      <h3 class="discount-codes-title">
+        {{ block_settings.title }}
+        {% if block_settings.show_badge %}
+          <span class="discount-codes-badge"></span>
+        {% endif %}
+      </h3>
+    </div>
+  {% endif %}
+  <div class="discount-codes-container" style="justify-content: {{ block_settings.cards_alignment }};">
+
+    {% for i in (1..5) %}
+      {% assign code_key = 'code_' | append: i %}
+      {% assign label_key = 'label_' | append: i %}
+      {% assign description_key = 'description_' | append: i %}
+      {% assign enabled_key = 'enable_code_' | append: i %}
+      
+      {% assign code_value = block_settings[code_key] %}
+      {% assign label_value = block_settings[label_key] %}
+      {% assign description_value = block_settings[description_key] %}
+      {% assign is_enabled = block_settings[enabled_key] %}
+      
+      {% if is_enabled and code_value != blank %}
+        <div 
+          class="discount-code-card" 
+          data-discount-card
+          data-code="{{ code_value }}"
+          role="button"
+          tabindex="0"
+          aria-label="Copy discount code {{ code_value }}"
+        >
+          <div class="discount-code-card__content">
+            {% if label_value != blank %}
+              <span class="discount-code-card__label">{{ label_value }}</span>
+            {% endif %}
+            <span class="discount-code-card__code">{{ code_value }}</span>
+            {% if description_value != blank %}
+              <span class="discount-code-card__description">{{ description_value }}</span>
+            {% endif %}
+          </div>
+          <div class="discount-code-card__copy-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M13.3333 6H7.33333C6.59695 6 6 6.59695 6 7.33333V13.3333C6 14.0697 6.59695 14.6667 7.33333 14.6667H13.3333C14.0697 14.6667 14.6667 14.0697 14.6667 13.3333V7.33333C14.6667 6.59695 14.0697 6 13.3333 6Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M3.33333 10H2.66667C2.31304 10 1.97391 9.85952 1.72386 9.60947C1.47381 9.35942 1.33333 9.02029 1.33333 8.66667V2.66667C1.33333 2.31304 1.47381 1.97391 1.72386 1.72386C1.97391 1.47381 2.31304 1.33333 2.66667 1.33333H8.66667C9.02029 1.33333 9.35942 1.47381 9.60947 1.72386C9.85952 1.97391 10 2.31304 10 2.66667V3.33333" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="discount-code-card__copied-message" data-copied-message>
+            Copied!
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+{% style %}
+  .discount-codes-wrapper {
+    width: 100%;
+    overflow: hidden;
+    padding-block: {{ block_settings.padding_top }}px;
+    padding-inline: 0;
+  }
+
+  .discount-codes-header {
+    margin-bottom: {{ block_settings.title_spacing }}px;
+  }
+
+  .discount-codes-title {
+    font-size: {{ block_settings.title_font_size }}px;
+    font-weight: {{ block_settings.title_font_weight }};
+    color: {{ block_settings.title_color }};
+    text-transform: {{ block_settings.title_text_transform }};
+    letter-spacing: {{ block_settings.title_letter_spacing }}px;
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    line-height: 1.2;
+  }
+
+  .discount-codes-badge {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background-color: {{ block_settings.badge_color }};
+    border-radius: 50%;
+  }
+
+  .discount-codes-container {
+    display: flex;
+    gap: {{ block_settings.card_gap }}px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: {{ block_settings.scrollbar_color }} transparent;
+    padding-bottom: 8px;
+    flex-wrap: nowrap;
+  }
+
+  .discount-codes-container::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .discount-codes-container::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .discount-codes-container::-webkit-scrollbar-thumb {
+    background-color: {{ block_settings.scrollbar_color }};
+    border-radius: 3px;
+  }
+
+  .discount-code-card {
+    position: relative;
+    flex: 0 0 auto;
+    min-width: {{ block_settings.card_min_width }}px;
+    max-width: {{ block_settings.card_max_width }}px;
+    padding: {{ block_settings.card_padding }}px;
+    background-color: {{ block_settings.card_bg_color }};
+    border: {{ block_settings.card_border_width }}px dashed {{ block_settings.card_border_color }};
+    border-radius: {{ block_settings.card_border_radius }}px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .discount-code-card:hover {
+    background-color: {{ block_settings.card_hover_bg_color }};
+    border-color: {{ block_settings.card_hover_border_color }};
+    border-style: solid;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+
+  .discount-code-card:active {
+    transform: translateY(0);
+  }
+
+  .discount-code-card__content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+    width: 100%;
+  }
+
+  .discount-code-card__label {
+    font-size: {{ block_settings.label_font_size }}px;
+    font-weight: {{ block_settings.label_font_weight }};
+    color: {{ block_settings.label_color }};
+    line-height: 1.2;
+  }
+
+  .discount-code-card__code {
+    font-size: {{ block_settings.code_font_size }}px;
+    font-weight: {{ block_settings.code_font_weight }};
+    color: {{ block_settings.code_text_color }};
+    background-color: {{ block_settings.code_bg_color }};
+    padding: {{ block_settings.code_padding_vertical }}px {{ block_settings.code_padding_horizontal }}px;
+    border-radius: {{ block_settings.code_border_radius }}px;
+    font-family: 'Courier New', Courier, monospace;
+    letter-spacing: {{ block_settings.code_letter_spacing }}px;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-transform: uppercase;
+  }
+
+  .discount-code-card__code::before {
+    content: 'CODE - ';
+    font-weight: {{ block_settings.code_prefix_weight }};
+  }
+
+  .discount-code-card__description {
+    font-size: {{ block_settings.description_font_size }}px;
+    font-weight: {{ block_settings.description_font_weight }};
+    color: {{ block_settings.description_color }};
+    line-height: 1.3;
+  }
+
+  .discount-code-card__copy-icon {
+    position: absolute;
+    top: {{ block_settings.card_padding }}px;
+    right: {{ block_settings.card_padding }}px;
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: {{ block_settings.icon_color }};
+    transition: color 0.2s ease;
+    opacity: 0.6;
+  }
+
+  .discount-code-card:hover .discount-code-card__copy-icon {
+    color: {{ block_settings.icon_hover_color }};
+    opacity: 1;
+  }
+
+  .discount-code-card__copied-message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    white-space: nowrap;
+    z-index: 10;
+  }
+
+  .discount-code-card__copied-message.show {
+    opacity: 1;
+  }
+
+  @media screen and (max-width: 749px) {
+    .discount-code-card {
+      min-width: {{ block_settings.card_min_width_mobile }}px;
+    }
+  }
+{% endstyle %}
+
+{% javascript %}
+  class DiscountCodes {
+    constructor(wrapper) {
+      this.wrapper = wrapper;
+      this.cards = wrapper.querySelectorAll('[data-discount-card]');
+      this.init();
+    }
+
+    init() {
+      this.cards.forEach(card => {
+        card.addEventListener('click', () => this.copyCode(card));
+        card.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            this.copyCode(card);
+          }
+        });
+      });
+    }
+
+    async copyCode(card) {
+      const code = card.dataset.code;
+      const copiedMessage = card.querySelector('[data-copied-message]');
+
+      try {
+        // Try using the Clipboard API
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(code);
+        } else {
+          // Fallback for older browsers
+          const textarea = document.createElement('textarea');
+          textarea.value = code;
+          textarea.style.position = 'fixed';
+          textarea.style.opacity = '0';
+          document.body.appendChild(textarea);
+          textarea.select();
+          document.execCommand('copy');
+          document.body.removeChild(textarea);
+        }
+
+        // Show copied message
+        copiedMessage.classList.add('show');
+        
+        // Hide after 2 seconds
+        setTimeout(() => {
+          copiedMessage.classList.remove('show');
+        }, 2000);
+
+      } catch (err) {
+        console.error('Failed to copy code:', err);
+      }
+    }
+  }
+
+  const initDiscountCodes = () => {
+    document.querySelectorAll('[data-discount-codes]').forEach(wrapper => {
+      if (!wrapper.__discountCodesInstance) {
+        wrapper.__discountCodesInstance = new DiscountCodes(wrapper);
+      }
+    });
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initDiscountCodes);
+  } else {
+    initDiscountCodes();
+  }
+
+  document.addEventListener('shopify:section:load', initDiscountCodes);
+  document.addEventListener('shopify:section:select', initDiscountCodes);
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "Discount Codes",
+  "tag": "div",
+  "class": "discount-codes-block",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Title Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "Show Title",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "LIMITED TIME OFFERS"
+    },
+    {
+      "type": "select",
+      "id": "title_alignment",
+      "label": "Title Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "title_font_size",
+      "label": "Title Font Size",
+      "min": 12,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "select",
+      "id": "title_font_weight",
+      "label": "Title Font Weight",
+      "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra Bold" }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "select",
+      "id": "title_text_transform",
+      "label": "Title Text Transform",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "uppercase", "label": "Uppercase" },
+        { "value": "lowercase", "label": "Lowercase" },
+        { "value": "capitalize", "label": "Capitalize" }
+      ],
+      "default": "uppercase"
+    },
+    {
+      "type": "range",
+      "id": "title_letter_spacing",
+      "label": "Title Letter Spacing",
+      "min": 0,
+      "max": 5,
+      "step": 0.5,
+      "unit": "px",
+      "default": 1
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#000000"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_badge",
+      "label": "Show Badge (Red Dot)",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "badge_color",
+      "label": "Badge Color",
+      "default": "#ff0000"
+    },
+    {
+      "type": "range",
+      "id": "title_spacing",
+      "label": "Space Below Title",
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "select",
+      "id": "cards_alignment",
+      "label": "Cards Alignment",
+      "options": [
+        { "value": "flex-start", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "flex-end", "label": "Right" }
+      ],
+      "default": "flex-start"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "card_gap",
+      "label": "Gap Between Cards",
+      "min": 8,
+      "max": 32,
+      "step": 4,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "card_min_width",
+      "label": "Card Min Width (Desktop)",
+      "min": 150,
+      "max": 400,
+      "step": 10,
+      "unit": "px",
+      "default": 250
+    },
+    {
+      "type": "range",
+      "id": "card_max_width",
+      "label": "Card Max Width",
+      "min": 200,
+      "max": 500,
+      "step": 10,
+      "unit": "px",
+      "default": 350
+    },
+    {
+      "type": "range",
+      "id": "card_min_width_mobile",
+      "label": "Card Min Width (Mobile)",
+      "min": 150,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "default": 200
+    },
+    {
+      "type": "header",
+      "content": "Card Styling"
+    },
+    {
+      "type": "range",
+      "id": "card_padding",
+      "label": "Card Padding",
+      "min": 8,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "card_border_width",
+      "label": "Border Width",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "unit": "px",
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "label": "Border Radius",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "color",
+      "id": "card_bg_color",
+      "label": "Background Color",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Border Color",
+      "default": "#e0e0e0"
+    },
+    {
+      "type": "color",
+      "id": "card_hover_bg_color",
+      "label": "Hover Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "card_hover_border_color",
+      "label": "Hover Border Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "scrollbar_color",
+      "label": "Scrollbar Color",
+      "default": "#cccccc"
+    },
+    {
+      "type": "header",
+      "content": "Label Styling"
+    },
+    {
+      "type": "range",
+      "id": "label_font_size",
+      "label": "Font Size",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "select",
+      "id": "label_font_weight",
+      "label": "Font Weight",
+      "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "500"
+    },
+    {
+      "type": "color",
+      "id": "label_color",
+      "label": "Text Color",
+      "default": "#666666"
+    },
+    {
+      "type": "header",
+      "content": "Code Badge Styling"
+    },
+    {
+      "type": "range",
+      "id": "code_font_size",
+      "label": "Font Size",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 11
+    },
+    {
+      "type": "select",
+      "id": "code_font_weight",
+      "label": "Font Weight",
+      "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra Bold" }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "select",
+      "id": "code_prefix_weight",
+      "label": "Prefix Font Weight (CODE -)",
+      "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra Bold" }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "color",
+      "id": "code_text_color",
+      "label": "Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "code_bg_color",
+      "label": "Background Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "code_padding_vertical",
+      "label": "Vertical Padding",
+      "min": 4,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "code_padding_horizontal",
+      "label": "Horizontal Padding",
+      "min": 8,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "code_border_radius",
+      "label": "Border Radius",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "code_letter_spacing",
+      "label": "Letter Spacing",
+      "min": 0,
+      "max": 3,
+      "step": 0.5,
+      "unit": "px",
+      "default": 1
+    },
+    {
+      "type": "header",
+      "content": "Description Styling"
+    },
+    {
+      "type": "range",
+      "id": "description_font_size",
+      "label": "Font Size",
+      "min": 10,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "default": 11
+    },
+    {
+      "type": "select",
+      "id": "description_font_weight",
+      "label": "Font Weight",
+      "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Text Color",
+      "default": "#999999"
+    },
+    {
+      "type": "header",
+      "content": "Icon Styling"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon Color",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "icon_hover_color",
+      "label": "Icon Hover Color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Coupon Code 1"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_code_1",
+      "label": "Enable Code 1",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "label_1",
+      "label": "Label",
+      "default": "FLAT 10% OFF"
+    },
+    {
+      "type": "text",
+      "id": "code_1",
+      "label": "Coupon Code",
+      "default": "PURE10"
+    },
+    {
+      "type": "text",
+      "id": "description_1",
+      "label": "Description",
+    },
+    {
+      "type": "header",
+      "content": "Coupon Code 2"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_code_2",
+      "label": "Enable Code 2",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "label_2",
+      "label": "Label",
+      "default": "Save 15%"
+    },
+    {
+      "type": "text",
+      "id": "code_2",
+      "label": "Coupon Code",
+      "default": "SAVE15"
+    },
+    {
+      "type": "text",
+      "id": "description_2",
+      "label": "Description",
+      "default": "On orders above $100"
+    },
+    {
+      "type": "header",
+      "content": "Coupon Code 3"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_code_3",
+      "label": "Enable Code 3",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "label_3",
+      "label": "Label",
+      "default": "Save 20%"
+    },
+    {
+      "type": "text",
+      "id": "code_3",
+      "label": "Coupon Code",
+      "default": "SAVE20"
+    },
+    {
+      "type": "text",
+      "id": "description_3",
+      "label": "Description",
+      "default": "On orders above $150"
+    },
+    {
+      "type": "header",
+      "content": "Coupon Code 4"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_code_4",
+      "label": "Enable Code 4",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "label_4",
+      "label": "Label",
+      "default": "Free Shipping"
+    },
+    {
+      "type": "text",
+      "id": "code_4",
+      "label": "Coupon Code",
+      "default": "FREESHIP"
+    },
+    {
+      "type": "text",
+      "id": "description_4",
+      "label": "Description",
+      "default": "On all orders"
+    },
+    {
+      "type": "header",
+      "content": "Coupon Code 5"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_code_5",
+      "label": "Enable Code 5",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "label_5",
+      "label": "Label",
+      "default": "First Order"
+    },
+    {
+      "type": "text", 
+      "id": "code_5",
+      "label": "Coupon Code",
+      "default": "FIRST10"
+    },
+    {
+      "type": "text",
+      "id": "description_5",
+      "label": "Description",
+      "default": "10% off first order"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Discount Codes",
+      "category": "Content"
+    }
+  ]
+}
+{% endschema %}

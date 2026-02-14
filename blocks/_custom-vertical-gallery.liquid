@@ -1,0 +1,525 @@
+
+{% assign block_settings = block.settings %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/11.0.5/swiper-bundle.min.css" integrity="sha512-rd0qOHVMOcez6pLWPVFIv7EfSdGKLt+eafXh4RO/12Fgr41hDQxfGvoi1Vy55QIVcQEujUE1LQrATCLl2Fs+ag==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+{%- liquid
+  assign selected_product = closest.product
+  assign gallery_media = selected_product.media
+  assign gallery_thumb_width = block_settings.thumbnail_width | default: 100
+  assign gallery_thumb_gap = block_settings.thumbnail_gap | default: 12
+-%}
+
+<div
+  class="custom-vertical-gallery"
+  data-custom-vertical-gallery
+  data-product-id="{{ selected_product.id }}"
+  style="--gallery-thumb-width: {{ gallery_thumb_width }}px; --gallery-thumb-gap: {{ gallery_thumb_gap }}px;"
+>
+  {% if gallery_media.size > 1 %}
+    <div class="custom-vertical-gallery__thumbnails-wrapper">
+      <div
+        class="custom-vertical-gallery__thumbnails swiper"
+        data-gallery-thumbnails
+        role="tablist"
+        aria-label="{{ 'accessibility.product_media_thumbnails' | t }}"
+      >
+        <div class="swiper-wrapper">
+          {% for media in gallery_media %}
+          {% assign thumbnail_alt = media.alt | default: selected_product.title %}
+          {% assign preview_image = media.preview_image %}
+          <div class="swiper-slide">
+            <button
+              type="button"
+              class="custom-vertical-gallery__thumbnail button button-unstyled{% if forloop.first %} is-active{% endif %}"
+              data-gallery-thumbnail
+              data-index="{{ forloop.index0 }}"
+              role="tab"
+              aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+              aria-controls="custom-gallery-slide-{{ forloop.index0 }}"
+              {% if forloop.first %}
+                aria-current="true"
+              {% endif %}
+            >
+          {% if preview_image %}
+          {% assign aspect_ratio = 'aspect-ratio: ' | append: preview_image.aspect_ratio %}
+            {{
+              preview_image
+              | image_url: width: 400
+              | image_tag:
+                loading: 'lazy',
+                alt: thumbnail_alt,
+                widths: '200, 300, 400',
+                style: aspect_ratio
+            }}
+          {% else %}
+            <span class="custom-vertical-gallery__thumbnail-fallback">
+              {{ media.media_type | capitalize }}
+            </span>
+          {% endif %}
+
+          {% if media.media_type == 'video' or media.media_type == 'external_video' %}
+            <span class="custom-vertical-gallery__thumbnail-badge" aria-hidden="true">
+              {{ 'icon-play.svg' | inline_asset_content }}
+            </span>
+          {% elsif media.media_type == 'model' %}
+            <span class="custom-vertical-gallery__thumbnail-badge" aria-hidden="true">
+              {% render 'icon', icon: '3d-model' %}
+            </span>
+          {% endif %}
+            </button>
+          </div>
+        {% endfor %}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="custom-vertical-gallery__stage sticky-content spacing-style" role="group" aria-roledescription="{{ 'accessibility.carousel' | t }}">
+    {% if gallery_media.size > 1 %}
+      <button type="button" class="custom-vertical-gallery__nav-arrow custom-vertical-gallery__nav-arrow--prev" data-slider-prev aria-label="Previous slide">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <button type="button" class="custom-vertical-gallery__nav-arrow custom-vertical-gallery__nav-arrow--next" data-slider-next aria-label="Next slide">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    {% endif %}
+    <div
+      class="custom-vertical-gallery__slides swiper"
+      data-gallery-slides
+      tabindex="0"
+      aria-live="polite"
+    >
+      <div class="swiper-wrapper">
+        {% for media in gallery_media %}
+          {% assign slide_classes = 'custom-vertical-gallery__slide swiper-slide' %}
+          {% if forloop.first %}
+            {% assign slide_classes = slide_classes | append: ' is-active' %}
+          {% endif %}
+          {% assign media_loading = 'lazy' %}
+          {% if forloop.first %}
+            {% assign media_loading = 'eager' %}
+          {% endif %}
+          <div
+            id="custom-gallery-slide-{{ forloop.index0 }}"
+            class="{{ slide_classes }}"
+            data-gallery-slide
+            data-index="{{ forloop.index0 }}"
+            aria-hidden="{% if forloop.first %}false{% else %}true{% endif %}"
+            tabindex="{% if forloop.first %}0{% else %}-1{% endif %}"
+            data-media-id="{{ media.id }}"
+          >
+            {%- render 'product-media',
+              media: media,
+              loading: media_loading,
+              is_main_product_media: forloop.first,
+              sizes: '(min-width: 990px) min(60vw, 800px), 100vw'
+            -%}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    {% if block_settings.enable_mobile_dots and gallery_media.size > 1 %}
+      <div class="custom-vertical-gallery__dots swiper-pagination" data-gallery-dots></div>
+    {% endif %}
+  </div>
+</div>
+
+{% style %}
+  .custom-vertical-gallery {
+    --gallery-thumb-width: 100px;
+    --gallery-thumb-gap: 12px;
+    display: grid;
+    gap: var(--gallery-thumb-gap);
+    grid-template-columns: var(--gallery-thumb-width) 1fr;
+    align-items: start;
+  }
+
+  .custom-vertical-gallery__thumbnails-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    max-height: 450px
+  }
+
+  .custom-vertical-gallery__thumbnails {
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .custom-vertical-gallery__thumbnails .swiper-wrapper {
+    flex-direction: column;
+  }
+
+  .custom-vertical-gallery__thumbnails .swiper-slide {
+    height: auto;
+    margin-bottom: var(--gallery-thumb-gap);
+  }
+
+  .custom-vertical-gallery__nav-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgb(255 255 255 / 0.9);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--color-foreground);
+    padding: 0;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 0.15);
+  }
+
+  .custom-vertical-gallery__nav-arrow:hover:not(:disabled) {
+    background: rgb(255 255 255 / 1);
+    box-shadow: 0 4px 12px rgb(0 0 0 / 0.2);
+    transform: translateY(-50%) scale(1.05);
+  }
+
+  .custom-vertical-gallery__nav-arrow:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  .custom-vertical-gallery__nav-arrow--prev {
+    left: 16px;
+  }
+
+  .custom-vertical-gallery__nav-arrow--next {
+    right: 16px;
+  }
+
+  .custom-vertical-gallery__thumbnail {
+    width: 100%;
+    border-radius: var(--media-radius, 0);
+    overflow: hidden;
+    position: relative;
+    padding: 0;
+    background: transparent;
+    border: 2px solid transparent;
+    transition: border-color 0.2s ease;
+    display: block;
+  }
+
+  .custom-vertical-gallery__thumbnail:is(:hover, :focus-visible) {
+    border-color: color-mix(in srgb, currentColor 30%, transparent);
+  }
+
+  .custom-vertical-gallery__thumbnail.is-active {
+    border-color: var(--color-foreground);
+  }
+
+  .custom-vertical-gallery__thumbnail img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: inherit;
+  }
+
+  .custom-vertical-gallery__thumbnail-badge {
+    position: absolute;
+    inset-inline-end: 6px;
+    inset-block-end: 6px;
+    display: grid;
+    place-items: center;
+    background-color: rgb(0 0 0 / 0.6);
+    color: white;
+    width: 24px;
+    height: 24px;
+    border-radius: 999px;
+  }
+
+  .custom-vertical-gallery__thumbnail-badge svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .custom-vertical-gallery__thumbnail-fallback {
+    display: grid;
+    place-items: center;
+    font-size: 0.75rem;
+    min-height: calc(var(--gallery-thumb-width) * 1.2);
+    background-color: var(--color-background);
+  }
+
+  .custom-vertical-gallery__stage {
+    position: relative;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .custom-vertical-gallery__slides {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .custom-vertical-gallery__slide {
+    width: 100%;
+  }
+
+  .custom-vertical-gallery__dots {
+    display: none;
+  }
+
+  @media screen and (max-width: 749px) {
+    .custom-vertical-gallery {
+      grid-template-columns: 1fr;
+    }
+
+    .custom-vertical-gallery__thumbnails-wrapper {
+      display: none;
+    }
+
+    .custom-vertical-gallery__nav-arrow {
+      display: none;
+    }
+
+    .custom-vertical-gallery__stage {
+      position: relative;
+    }
+
+    .custom-vertical-gallery__dots,
+    .custom-vertical-gallery__dots.swiper-pagination {
+      display: block;
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+    }
+
+    .custom-vertical-gallery__dots,
+    .custom-vertical-gallery__dots.swiper-pagination {
+      position: absolute;
+      bottom: 10px;
+    }
+
+    .custom-vertical-gallery__dots .swiper-pagination-bullet {
+      width: 10px;
+      height: 10px;
+      background-color: rgb(0 0 0 / 0.5);
+      opacity: 1;
+      margin: 0 4px;
+    }
+
+    .custom-vertical-gallery__dots .swiper-pagination-bullet-active {
+      background-color: rgb(0 0 0 / 1);
+    }
+  }
+{% endstyle %}
+
+{% javascript %}
+  class CustomVerticalGallery {
+    constructor(element) {
+      this.element = element;
+      this.thumbnailsEl = element.querySelector('[data-gallery-thumbnails]');
+      this.slidesEl = element.querySelector('[data-gallery-slides]');
+      this.dotsEl = element.querySelector('[data-gallery-dots]');
+      this.sliderPrevBtn = element.querySelector('[data-slider-prev]');
+      this.sliderNextBtn = element.querySelector('[data-slider-next]');
+      
+      this.mainSwiper = null;
+      this.thumbSwiper = null;
+
+      this.init();
+    }
+
+    init() {
+      if (!window.Swiper) {
+        console.error('Swiper library not loaded');
+        return;
+      }
+
+      // Initialize thumbnail swiper (desktop only)
+      if (this.thumbnailsEl) {
+        this.thumbSwiper = new Swiper(this.thumbnailsEl, {
+          direction: 'vertical',
+          slidesPerView: 'auto',
+          spaceBetween: 12,
+          watchSlidesProgress: true,
+          freeMode: true,
+        });
+      }
+
+      // Initialize main slider
+      const mainConfig = {
+        slidesPerView: 1,
+        spaceBetween: 0,
+        effect: 'fade',
+        fadeEffect: {
+          crossFade: true
+        },
+        keyboard: {
+          enabled: true,
+        },
+        navigation: {
+          nextEl: this.sliderNextBtn,
+          prevEl: this.sliderPrevBtn,
+        },
+      };
+
+      // Add pagination for mobile
+      if (this.dotsEl) {
+        mainConfig.pagination = {
+          el: this.dotsEl,
+          clickable: true,
+          dynamicBullets: false,
+        };
+      }
+
+      // Add thumbs connection for desktop
+      if (this.thumbSwiper) {
+        mainConfig.thumbs = {
+          swiper: this.thumbSwiper,
+        };
+      }
+
+      // Enable touch on mobile
+      const isMobile = window.innerWidth < 750;
+      if (isMobile) {
+        mainConfig.allowTouchMove = true;
+        mainConfig.effect = 'slide';
+      } else {
+        mainConfig.allowTouchMove = false;
+      }
+
+      this.mainSwiper = new Swiper(this.slidesEl, mainConfig);
+
+      // Sync active states
+      if (this.thumbSwiper) {
+        this.mainSwiper.on('slideChange', () => {
+          this.updateThumbnailStates();
+        });
+
+        // Handle thumbnail clicks
+        const thumbnails = this.element.querySelectorAll('[data-gallery-thumbnail]');
+        thumbnails.forEach((thumb, index) => {
+          thumb.addEventListener('click', () => {
+            this.mainSwiper.slideTo(index);
+          });
+        });
+      }
+
+      // Update initial state
+      this.updateThumbnailStates();
+
+      // Handle window resize
+      window.addEventListener('resize', () => {
+        const nowMobile = window.innerWidth < 750;
+        if (this.mainSwiper) {
+          this.mainSwiper.params.allowTouchMove = nowMobile;
+          this.mainSwiper.update();
+        }
+      });
+    }
+
+    updateThumbnailStates() {
+      if (!this.mainSwiper) return;
+      
+      const activeIndex = this.mainSwiper.activeIndex;
+      const thumbnails = this.element.querySelectorAll('[data-gallery-thumbnail]');
+      
+      thumbnails.forEach((thumb, index) => {
+        if (index === activeIndex) {
+          thumb.classList.add('is-active');
+          thumb.setAttribute('aria-selected', 'true');
+          thumb.setAttribute('aria-current', 'true');
+        } else {
+          thumb.classList.remove('is-active');
+          thumb.setAttribute('aria-selected', 'false');
+          thumb.removeAttribute('aria-current');
+        }
+      });
+    }
+
+    destroy() {
+      if (this.mainSwiper) {
+        this.mainSwiper.destroy();
+      }
+      if (this.thumbSwiper) {
+        this.thumbSwiper.destroy();
+      }
+    }
+  }
+
+  const initCustomVerticalGalleries = () => {
+    document.querySelectorAll('[data-custom-vertical-gallery]').forEach((gallery) => {
+      if (gallery.__customVerticalGalleryInstance) {
+        gallery.__customVerticalGalleryInstance.destroy();
+      }
+      gallery.__customVerticalGalleryInstance = new CustomVerticalGallery(gallery);
+    });
+  };
+
+  // Wait for Swiper to load
+  const waitForSwiper = () => {
+    if (window.Swiper) {
+      initCustomVerticalGalleries();
+    } else {
+      setTimeout(waitForSwiper, 100);
+    }
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', waitForSwiper);
+  } else {
+    waitForSwiper();
+  }
+
+  document.addEventListener('shopify:section:load', () => setTimeout(initCustomVerticalGalleries, 100));
+  document.addEventListener('shopify:section:select', () => setTimeout(initCustomVerticalGalleries, 100));
+
+  if (window.Shopify && Shopify.designMode) {
+    document.addEventListener('shopify:block:select', () => setTimeout(initCustomVerticalGalleries, 100));
+  }
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "Custom Vertical Gallery",
+  "settings": [
+    {
+      "type": "range",
+      "id": "thumbnail_width",
+      "label": "Thumbnail Width",
+      "min": 60,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 100,
+      "info": "Width of vertical thumbnail column"
+    },
+    {
+      "type": "range",
+      "id": "thumbnail_gap",
+      "label": "Thumbnail Gap",
+      "min": 4,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 12,
+      "info": "Space between thumbnail images"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_mobile_dots",
+      "label": "Enable Mobile Dots",
+      "default": true,
+      "info": "Show dot navigation on mobile devices"
+    }
+  ]
+}
+{% endschema %}
