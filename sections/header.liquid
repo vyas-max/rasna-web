@@ -291,27 +291,27 @@
     --header-padding: var(--padding-sm);
     --font-paragraph--line-height: 1;
     position: relative;
-    background-color: #ffeb3b; /* Premium Vibrant Yellow */
-    --color-foreground: #000000; /* Force dark text on yellow */
-    --color-foreground-rgb: 0, 0, 0;
+    background-color: var(--color-primary); /* Use theme's primary red */
+    --color-foreground: #ffffff; /* Force white text on red */
+    --color-foreground-rgb: 255, 255, 255;
     transition: background-color var(--animation-speed) var(--animation-easing), box-shadow var(--animation-speed) var(--animation-easing);
   }
 
   .header__row {
     position: relative;
-    /* will default to yellow unless transparent */
+    /* will default to red unless transparent */
     background-color: var(--header-bg-color, transparent);
     transition: background-color var(--animation-speed) var(--animation-easing);
   }
 
   /* Premium Header Enhancements */
   #header-component {
-    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
   }
 
   .header[data-sticky-state='active'] {
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    background-color: rgba(255, 235, 59, 0.95); /* Semi-transparent yellow on sticky */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    background-color: rgba(var(--color-primary-rgb), 0.95); /* Semi-transparent red on sticky */
     backdrop-filter: blur(10px);
   }
 
@@ -322,7 +322,7 @@
     position: relative;
     overflow: hidden;
     padding-bottom: 4px;
-    color: #000000; /* Dark text for contrast on yellow */
+    color: #ffffff; /* White text for contrast on red */
     transition: color var(--animation-speed) var(--animation-easing);
   }
 
@@ -333,14 +333,15 @@
     left: 0;
     width: 100%;
     height: 2px;
-    background-color: var(--color-primary); /* Keep the red underline for a striking contrast */
+    background-color: #ffffff; /* White underline for contrast */
     transform: scaleX(0);
     transform-origin: right;
     transition: transform var(--animation-speed) var(--animation-easing);
   }
 
   .menu-list__link:hover {
-    color: var(--color-primary); /* Links turn red on hover */
+    color: #ffffff;
+    opacity: 0.8;
   }
 
   .menu-list__link:hover::after {
@@ -350,13 +351,13 @@
 
   /* Action Icons Styling */
   .header-actions__action {
-    color: #000000;
+    color: #ffffff;
     transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
   }
 
   .header-actions__action:hover {
     transform: translateY(-2px);
-    color: var(--color-primary);
+    opacity: 0.8;
   }
 
   .header[transparent] {
