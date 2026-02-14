@@ -291,24 +291,27 @@
     --header-padding: var(--padding-sm);
     --font-paragraph--line-height: 1;
     position: relative;
+    background-color: #ffeb3b; /* Premium Vibrant Yellow */
+    --color-foreground: #000000; /* Force dark text on yellow */
+    --color-foreground-rgb: 0, 0, 0;
     transition: background-color var(--animation-speed) var(--animation-easing), box-shadow var(--animation-speed) var(--animation-easing);
   }
 
   .header__row {
     position: relative;
-    /* will default to bg from its color scheme unless --header-bg-color is transparent */
-    background-color: var(--header-bg-color, var(--color-background));
+    /* will default to yellow unless transparent */
+    background-color: var(--header-bg-color, transparent);
     transition: background-color var(--animation-speed) var(--animation-easing);
   }
 
   /* Premium Header Enhancements */
   #header-component {
-    border-bottom: 1px solid rgba(var(--color-border-rgb), 0.1);
+    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
   }
 
   .header[data-sticky-state='active'] {
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    background-color: rgba(var(--color-background-rgb), 0.98);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    background-color: rgba(255, 235, 59, 0.95); /* Semi-transparent yellow on sticky */
     backdrop-filter: blur(10px);
   }
 
@@ -319,6 +322,7 @@
     position: relative;
     overflow: hidden;
     padding-bottom: 4px;
+    color: #000000; /* Dark text for contrast on yellow */
     transition: color var(--animation-speed) var(--animation-easing);
   }
 
@@ -329,14 +333,14 @@
     left: 0;
     width: 100%;
     height: 2px;
-    background-color: var(--color-primary);
+    background-color: var(--color-primary); /* Keep the red underline for a striking contrast */
     transform: scaleX(0);
     transform-origin: right;
     transition: transform var(--animation-speed) var(--animation-easing);
   }
 
   .menu-list__link:hover {
-    color: var(--color-primary);
+    color: var(--color-primary); /* Links turn red on hover */
   }
 
   .menu-list__link:hover::after {
@@ -346,6 +350,7 @@
 
   /* Action Icons Styling */
   .header-actions__action {
+    color: #000000;
     transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
   }
 
