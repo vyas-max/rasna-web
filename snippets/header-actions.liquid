@@ -17,10 +17,11 @@
   {% else %}
     <a
       href="{{ routes.cart_url }}"
-      class="header-actions__action action__cart"
+      class="header-actions__action header-actions__cart-btn action__cart"
       aria-label="{{ 'accessibility.cart' | t }} {{ 'accessibility.cart_count' | t }}: {{ cart.item_count }}"
     >
       {% render 'cart-icon-component' %}
+      <span class="header-actions__cart-label">Add to Cart</span>
     </a>
   {% endif %}
 </header-actions>
@@ -266,5 +267,55 @@
 
   .cart-bubble--animating .cart-bubble__text {
     animation: cartBubbleSlideIn var(--animation-speed) var(--animation-easing);
+  }
+
+  /* Visible Add to Cart Button */
+  .header-actions__cart-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background-color: #ffffff;
+    color: #000000;
+    padding: 6px 16px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    transition: background-color 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .header-actions__cart-btn:hover {
+    background-color: #f0f0f0;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .header-actions__cart-btn svg {
+    width: 18px;
+    height: 18px;
+    color: #000000;
+  }
+
+  .header-actions__cart-label {
+    color: #000000;
+    font-weight: 600;
+  }
+
+  @media screen and (max-width: 749px) {
+    .header-actions__cart-label {
+      display: none;
+    }
+
+    .header-actions__cart-btn {
+      background-color: transparent;
+      padding: 0;
+      border-radius: 0;
+    }
+
+    .header-actions__cart-btn svg {
+      color: inherit;
+    }
   }
 {% endstylesheet %}

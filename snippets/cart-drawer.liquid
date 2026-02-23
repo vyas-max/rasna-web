@@ -22,11 +22,12 @@
   {% endif %}
 >
   <button
-    class="button header-actions__action button-unstyled"
+    class="button header-actions__action header-actions__cart-btn button-unstyled"
     on:click="/open"
     aria-label="{{ 'accessibility.open_cart_drawer' | t }} {{ 'accessibility.cart_count' | t}}: {{ cart.item_count }}"
   >
     {% render 'cart-icon-component' %}
+    <span class="header-actions__cart-label">Add to Cart</span>
   </button>
 
   <dialog
