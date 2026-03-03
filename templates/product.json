@@ -16,9 +16,9 @@
           "type": "_custom-vertical-gallery",
           "static": true,
           "settings": {
-            "thumbnail_width": 100,
-            "thumbnail_gap": 12,
-            "enable_mobile_dots": true
+            "thumbnail_width": 85,
+            "thumbnail_gap": 10,
+            "enable_mobile_dots": false
           },
           "blocks": {}
         },
@@ -53,7 +53,7 @@
               "type": "product-title",
               "name": "t:names.title",
               "settings": {
-                "width": "fit-content",
+                "width": "100%",
                 "max_width": "normal",
                 "alignment": "left",
                 "type_preset": "h2",
@@ -224,9 +224,9 @@
             "buy_buttons_eYQEYi": {
               "type": "buy-buttons",
               "settings": {
-                "stacking": false,
+                "stacking": true,
                 "show_pickup_availability": false,
-                "gift_card_form": true,
+                "gift_card_form": false,
                 "padding-block-start": 0,
                 "padding-block-end": 0,
                 "padding-inline-start": 0,
