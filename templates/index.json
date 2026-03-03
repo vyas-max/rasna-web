@@ -1869,6 +1869,7 @@
           "static": true,
           "settings": {
             "media_type": "image",
+            "image": "shopify://shop_images/Untitled_design_17.png",
             "link": "",
             "video_loop": true,
             "video_autoplay": false,
@@ -1924,7 +1925,7 @@
               "name": "t:names.image",
               "static": true,
               "settings": {
-                "image_ratio": "adapt",
+                "image_ratio": "square",
                 "constrain_to_viewport": "contain"
               },
               "blocks": {}
@@ -2081,8 +2082,8 @@
       ],
       "name": "t:names.product_recommendations",
       "settings": {
-        "product": "{{ closest.product }}",
-        "recommendation_type": "related",
+        "product": "rasna-32-glass-shahi-gulab",
+        "recommendation_type": "complementary",
         "layout_type": "grid",
         "carousel_on_mobile": false,
         "max_products": 4,
