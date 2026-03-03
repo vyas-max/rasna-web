@@ -2082,7 +2082,7 @@
       ],
       "name": "t:names.product_recommendations",
       "settings": {
-        "product": "rasna-32-glass-shahi-gulab",
+        "product": "{{ closest.product }}",
         "recommendation_type": "complementary",
         "layout_type": "grid",
         "carousel_on_mobile": false,
