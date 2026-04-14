@@ -236,17 +236,19 @@
         "block_c2c7b9764ace": {
           "type": "footer-copyright",
           "settings": {
-            "show_powered_by": true,
+            "show_powered_by": false,
             "font_size": "0.75rem",
             "case": "none"
-          }
+          },
+          "blocks": {}
         },
         "block_30bbda502766": {
           "type": "footer-policy-list",
           "settings": {
             "font_size": "0.75rem",
             "case": "none"
-          }
+          },
+          "blocks": {}
         },
         "block_c36586aa244f": {
           "type": "social-links",
@@ -255,8 +257,17 @@
             "instagram_url": "http://instagram.com/",
             "youtube_url": "https://www.youtube.com/",
             "tiktok_url": "https://tiktok.com/",
-            "twitter_url": "https://x.com/"
-          }
+            "twitter_url": "https://x.com/",
+            "threads_url": "",
+            "linkedin_url": "",
+            "bluesky_url": "",
+            "snapchat_url": "",
+            "pinterest_url": "",
+            "tumblr_url": "",
+            "vimeo_url": "",
+            "custom_url": ""
+          },
+          "blocks": {}
         }
       },
       "block_order": [
@@ -264,7 +275,14 @@
         "block_30bbda502766",
         "block_c36586aa244f"
       ],
-      "settings": {}
+      "settings": {
+        "section_width": "page-width",
+        "gap": 24,
+        "divider_thickness": 1,
+        "color_scheme": "",
+        "padding-block-start": 20,
+        "padding-block-end": 20
+      }
     }
   },
   "order": [
