@@ -792,7 +792,7 @@
           "type": "text",
           "name": "t:names.text",
           "settings": {
-            "text": "<h2>Recommded Product </h2>",
+            "text": "<h2>You May Like This </h2>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "center",
@@ -1070,10 +1070,10 @@
       "settings": {
         "product": "{{ closest.product }}",
         "recommendation_type": "related",
-        "layout_type": "grid",
+        "layout_type": "carousel",
         "carousel_on_mobile": false,
         "max_products": 6,
-        "columns": 3,
+        "columns": 5,
         "mobile_columns": "1",
         "columns_gap": 10,
         "rows_gap": 10,
