@@ -21,7 +21,7 @@
             "mobile_video": "shopify://files/videos/videoplayback (2).mp4",
             "height_desktop": 800,
             "height_unit_desktop": "px",
-            "height_mobile": 500,
+            "height_mobile": 450,
             "height_unit_mobile": "px",
             "object_fit": "cover",
             "focal_point_horizontal": "center",
