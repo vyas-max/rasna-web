@@ -17,7 +17,7 @@
         "announcement_RyNc3H": {
           "type": "_announcement",
           "settings": {
-            "text": "FREE SHIPPING ON ORDERS ABOVE ₹299/-",
+            "text": "FREE SHIPPING ABOVE ₹299/-",
             "link": "",
             "font": "var(--font-body--family)",
             "font_size": "1rem",
