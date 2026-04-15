@@ -39,6 +39,7 @@
     "inputs_border_radius": 0,
     "popover_border_radius": 0,
     "popover_border": "none",
+    "mobile_quick_add": true,
     "variant_swatch_radius": 0,
     "variant_button_radius": 0,
     "variant_button_width": "equal-width-buttons",

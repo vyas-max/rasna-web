@@ -1769,12 +1769,12 @@
         "rows_gap": 24,
         "icons_style": "arrow",
         "icons_shape": "none",
-        "section_width": "full-width",
+        "section_width": "page-width",
         "horizontal_alignment": "center",
-        "gap": 28,
+        "gap": 35,
         "color_scheme": "scheme-1",
-        "padding-block-start": 48,
-        "padding-block-end": 48
+        "padding-block-start": 71,
+        "padding-block-end": 75
       }
     },
     "176058278059948907": {
