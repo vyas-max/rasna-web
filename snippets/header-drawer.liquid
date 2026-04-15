@@ -657,24 +657,26 @@
     }
   }
 
+  .menu-drawer-container,
   .menu-drawer-container .header__icon--summary {
     color: var(--color-foreground);
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: var(--padding-lg);
+    padding: 0 var(--padding-xs);
+    height: 100%;
   }
 
   .header__icon--summary .header-drawer-icon {
     margin: auto;
-    width: var(--icon-size-xs);
-    height: var(--icon-size-xs);
+    width: 28px;
+    height: 28px;
   }
 
   .header__drawer {
     display: flex;
-    min-height: 60px;
     align-items: center;
+    height: 100%;
 
     @media screen and (min-width: 750px) {
       min-height: 0;

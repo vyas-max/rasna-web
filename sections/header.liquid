@@ -279,8 +279,16 @@
     --transparent-header-offset-boolean: 0; /* stylelint-disable-line declaration-property-value-disallowed-list */
   }
 
-  body:has(> #header-group > header) {
-    --header-height: 70px; /* Slightly taller for more premium feel */
+  @media screen and (max-width: 749px) {
+    body:has(> #header-group > header) {
+      --header-height: 80px; /* Specific height for mobile header */
+    }
+  }
+
+  @media screen and (min-width: 750px) {
+    body:has(> #header-group > header) {
+      --header-height: 70px; /* Restore desktop height */
+    }
   }
 
   body:has(> #header-group:empty) {
@@ -288,10 +296,9 @@
   }
 
   .header {
-    --header-padding: var(--padding-sm);
+    --header-padding: var(--padding-xs);
     --font-paragraph--line-height: 1;
     position: relative;
-    background-color: yellow;
     --color-foreground: #ffffff; /* Force white text on red */
     --color-foreground-rgb: 255, 255, 255;
     transition: background-color var(--animation-speed) var(--animation-easing), box-shadow var(--animation-speed) var(--animation-easing);
@@ -567,8 +574,26 @@
       grid-column: span 3;
       column-gap: 0;
       align-items: center;
-      padding-block: 0;
-      padding-inline: 0 var(--padding-3xs);
+      align-content: center;
+      padding-block: 0 !important;
+      padding-inline: 0 var(--padding-md);
+      height: 80px !important;
+      --button-size: 44px;
+
+      & > header-drawer,
+      & > .header-logo,
+      & > .search-action,
+      & > header-actions {
+        display: flex !important;
+        align-items: center !important;
+        height: 100% !important;
+        transform: translateY(-5px); /* Shift slight above center */
+      }
+
+      header-actions,
+      header-drawer {
+        --button-size: 52px; /* Slight bigger */
+      }
 
       .header-logo {
         grid-area: center;
