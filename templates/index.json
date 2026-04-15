@@ -2134,10 +2134,10 @@
       "name": "t:names.products_carousel",
       "settings": {
         "collection": "best-sellers",
-        "layout_type": "carousel",
+        "layout_type": "grid",
         "carousel_on_mobile": false,
-        "max_products": 6,
-        "columns": 4,
+        "max_products": 12,
+        "columns": 6,
         "mobile_columns": "2",
         "mobile_card_size": "60cqw",
         "columns_gap": 8,
