@@ -1778,186 +1778,6 @@
         "padding-block-end": 75
       }
     },
-    "176058278059948907": {
-      "type": "_blocks",
-      "blocks": {
-        "ai_gen_block_230badf_r7Vr8a": {
-          "type": "ai_gen_block_230badf",
-          "settings": {
-            "title": "Fueling Sports Nutrition",
-            "subtitle": "Discover our premium products in action",
-            "title_size": 40,
-            "subtitle_size": 16,
-            "title_color": "#000000",
-            "subtitle_color": "#000000",
-            "video_1": "shopify://files/videos/AQMEJRVdWtgisI0b7I6iClGALAxt-Da1Z1IXmAJb-1WVZoZDTBr5x1YxhQKV5pyruO6fXS5Sk3wuaa4zVq1QnovKujSgu0vfzDxSOfo.mp4",
-            "product_1": "rasna-32-glass-kool-khus",
-            "video_2": "shopify://files/videos/Planned a fun little house party with my gang, but didn’t go overboard—just stocked up on the on.mp4",
-            "product_2": "rasna-rich-10-ka-4",
-            "video_3": "shopify://files/videos/This summer, a regular afternoon turned into a fun little adventure—a treasure hunt that ended w.mp4",
-            "product_3": "rasna-rich-10-ka-4",
-            "video_4": "shopify://files/videos/Long day, heavy books, and the kind of heat that just melts your energy away. All I needed was a.mp4",
-            "product_4": "rasna-rich-10-ka-4",
-            "video_5": "shopify://files/videos/Some treasures from childhood are meant to be passed on. I couldn’t resist stealing my favourite.mp4",
-            "product_5": "rasna-international-zipper-pack-orange-flavour",
-            "video_6": "shopify://files/videos/Some things are just meant to be shared... like Rasna! The other day while sharing Rasna with so.mp4",
-            "product_6": "rasna-32-glass-nagpur-orange",
-            "video_7": "shopify://files/videos/Oh my God, it’s SO hot and irritating!  But then, I remembered Rasna Alphonso Mango! It’s the BE.mp4",
-            "product_7": "rasna-international-zipper-pack-mango-flavour",
-            "video_width": 280,
-            "video_gap": 20,
-            "video_border_radius": 12,
-            "show_arrows": true,
-            "show_thumbs": true,
-            "card_background": "#ffffff",
-            "card_border_color": "#e6e6e6",
-            "card_border_radius": 8,
-            "product_text_color": "#000000",
-            "button_color": "#ff6600",
-            "button_hover_color": "#e55a00",
-            "button_text_color": "#ffffff",
-            "button_border_radius": 4,
-            "arrow_background": "#ffffff",
-            "arrow_hover_background": "#f5f5f5",
-            "arrow_color": "#000000",
-            "thumb_color": "#cccccc",
-            "thumb_active_color": "#ff6600",
-            "section_padding_top": 60,
-            "section_padding_bottom": 60,
-            "background_color": "#ffffff"
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "ai_gen_block_230badf_r7Vr8a"
-      ],
-      "settings": {
-        "content_direction": "column",
-        "vertical_on_mobile": true,
-        "horizontal_alignment": "flex-start",
-        "vertical_alignment": "center",
-        "align_baseline": false,
-        "horizontal_alignment_flex_direction_column": "center",
-        "vertical_alignment_flex_direction_column": "center",
-        "gap": 12,
-        "section_width": "page-width",
-        "section_height": "",
-        "section_height_custom": 50,
-        "color_scheme": "",
-        "background_media": "none",
-        "video_position": "cover",
-        "background_image_position": "cover",
-        "border": "none",
-        "border_width": 1,
-        "border_opacity": 100,
-        "border_radius": 0,
-        "toggle_overlay": false,
-        "overlay_color": "#00000026",
-        "overlay_style": "solid",
-        "gradient_direction": "to top",
-        "padding-block-start": 0,
-        "padding-block-end": 0
-      }
-    },
-    "featured_product_6Uarpf": {
-      "type": "featured-product",
-      "blocks": {
-        "media": {
-          "type": "_media-without-appearance",
-          "name": "t:names.product_media",
-          "static": true,
-          "settings": {
-            "media_type": "image",
-            "image": "shopify://shop_images/3_598a6ac2-1b0d-4039-a390-2aaa7b61d855.png",
-            "link": "",
-            "video_loop": true,
-            "video_autoplay": false,
-            "image_position": "cover",
-            "video_position": "cover"
-          },
-          "blocks": {}
-        },
-        "featured-product": {
-          "type": "_featured-product",
-          "name": "t:names.product",
-          "static": true,
-          "settings": {},
-          "blocks": {
-            "featured-product-title": {
-              "type": "product-title",
-              "name": "t:names.title",
-              "static": true,
-              "settings": {
-                "width": "100%",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "h5",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "var(--color-foreground)",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "featured-product-price": {
-              "type": "_featured-product-price",
-              "name": "t:names.price",
-              "static": true,
-              "settings": {
-                "show_sale_price_first": true,
-                "type_preset": ""
-              },
-              "blocks": {}
-            },
-            "featured-product-gallery": {
-              "type": "_featured-product-gallery",
-              "name": "t:names.image",
-              "static": true,
-              "settings": {
-                "image_ratio": "square",
-                "constrain_to_viewport": "contain"
-              },
-              "blocks": {}
-            },
-            "featured-product-swatches": {
-              "type": "swatches",
-              "name": "t:names.swatches",
-              "static": true,
-              "settings": {
-                "product_swatches_alignment": "flex-start",
-                "product_swatches_alignment_mobile": "flex-start",
-                "hide_padding": true,
-                "product_swatches_padding_top": 4,
-                "product_swatches_padding_bottom": 0,
-                "product_swatches_padding_left": 0,
-                "product_swatches_padding_right": 0
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": []
-        }
-      },
-      "name": "t:names.featured_product",
-      "settings": {
-        "product": "rasna-rich-nagpur-orange-10-ka-3",
-        "layout": "media-left",
-        "color_scheme": "scheme-5",
-        "padding-block-start": 0,
-        "padding-block-end": 0
-      }
-    },
     "product_list_fmPEez": {
       "type": "product-list",
       "blocks": {
@@ -2152,6 +1972,186 @@
         "padding-block-end": 48
       }
     },
+    "176058278059948907": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_230badf_r7Vr8a": {
+          "type": "ai_gen_block_230badf",
+          "settings": {
+            "title": "Fueling Sports Nutrition",
+            "subtitle": "Discover our premium products in action",
+            "title_size": 40,
+            "subtitle_size": 16,
+            "title_color": "#000000",
+            "subtitle_color": "#000000",
+            "video_1": "shopify://files/videos/AQMEJRVdWtgisI0b7I6iClGALAxt-Da1Z1IXmAJb-1WVZoZDTBr5x1YxhQKV5pyruO6fXS5Sk3wuaa4zVq1QnovKujSgu0vfzDxSOfo.mp4",
+            "product_1": "rasna-32-glass-kool-khus",
+            "video_2": "shopify://files/videos/Planned a fun little house party with my gang, but didn’t go overboard—just stocked up on the on.mp4",
+            "product_2": "rasna-rich-10-ka-4",
+            "video_3": "shopify://files/videos/This summer, a regular afternoon turned into a fun little adventure—a treasure hunt that ended w.mp4",
+            "product_3": "rasna-rich-10-ka-4",
+            "video_4": "shopify://files/videos/Long day, heavy books, and the kind of heat that just melts your energy away. All I needed was a.mp4",
+            "product_4": "rasna-rich-10-ka-4",
+            "video_5": "shopify://files/videos/Some treasures from childhood are meant to be passed on. I couldn’t resist stealing my favourite.mp4",
+            "product_5": "rasna-international-zipper-pack-orange-flavour",
+            "video_6": "shopify://files/videos/Some things are just meant to be shared... like Rasna! The other day while sharing Rasna with so.mp4",
+            "product_6": "rasna-32-glass-nagpur-orange",
+            "video_7": "shopify://files/videos/Oh my God, it’s SO hot and irritating!  But then, I remembered Rasna Alphonso Mango! It’s the BE.mp4",
+            "product_7": "rasna-international-zipper-pack-mango-flavour",
+            "video_width": 280,
+            "video_gap": 20,
+            "video_border_radius": 12,
+            "show_arrows": true,
+            "show_thumbs": true,
+            "card_background": "#ffffff",
+            "card_border_color": "#e6e6e6",
+            "card_border_radius": 8,
+            "product_text_color": "#000000",
+            "button_color": "#ff6600",
+            "button_hover_color": "#e55a00",
+            "button_text_color": "#ffffff",
+            "button_border_radius": 4,
+            "arrow_background": "#ffffff",
+            "arrow_hover_background": "#f5f5f5",
+            "arrow_color": "#000000",
+            "thumb_color": "#cccccc",
+            "thumb_active_color": "#ff6600",
+            "section_padding_top": 60,
+            "section_padding_bottom": 60,
+            "background_color": "#ffffff"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_230badf_r7Vr8a"
+      ],
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 12,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
+    "featured_product_6Uarpf": {
+      "type": "featured-product",
+      "blocks": {
+        "media": {
+          "type": "_media-without-appearance",
+          "name": "t:names.product_media",
+          "static": true,
+          "settings": {
+            "media_type": "image",
+            "image": "shopify://shop_images/3_598a6ac2-1b0d-4039-a390-2aaa7b61d855.png",
+            "link": "",
+            "video_loop": true,
+            "video_autoplay": false,
+            "image_position": "cover",
+            "video_position": "cover"
+          },
+          "blocks": {}
+        },
+        "featured-product": {
+          "type": "_featured-product",
+          "name": "t:names.product",
+          "static": true,
+          "settings": {},
+          "blocks": {
+            "featured-product-title": {
+              "type": "product-title",
+              "name": "t:names.title",
+              "static": true,
+              "settings": {
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "h5",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "featured-product-price": {
+              "type": "_featured-product-price",
+              "name": "t:names.price",
+              "static": true,
+              "settings": {
+                "show_sale_price_first": true,
+                "type_preset": ""
+              },
+              "blocks": {}
+            },
+            "featured-product-gallery": {
+              "type": "_featured-product-gallery",
+              "name": "t:names.image",
+              "static": true,
+              "settings": {
+                "image_ratio": "square",
+                "constrain_to_viewport": "contain"
+              },
+              "blocks": {}
+            },
+            "featured-product-swatches": {
+              "type": "swatches",
+              "name": "t:names.swatches",
+              "static": true,
+              "settings": {
+                "product_swatches_alignment": "flex-start",
+                "product_swatches_alignment_mobile": "flex-start",
+                "hide_padding": true,
+                "product_swatches_padding_top": 4,
+                "product_swatches_padding_bottom": 0,
+                "product_swatches_padding_left": 0,
+                "product_swatches_padding_right": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": []
+        }
+      },
+      "name": "t:names.featured_product",
+      "settings": {
+        "product": "rasna-rich-nagpur-orange-10-ka-3",
+        "layout": "media-left",
+        "color_scheme": "scheme-5",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
     "section_RhpYRt": {
       "type": "section",
       "blocks": {
@@ -2321,10 +2321,10 @@
     "collection_list_NjkzXa",
     "section_pNpVYd",
     "product_list_X8Q7bi",
-    "product_list_Exk9DL",
+    "product_list_fmPEez",
     "176058278059948907",
     "featured_product_6Uarpf",
-    "product_list_fmPEez",
+    "product_list_Exk9DL",
     "section_RhpYRt"
   ]
 }
