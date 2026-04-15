@@ -17,6 +17,7 @@
           "settings": {
             "desktop_video": "shopify://files/videos/Rasna 2 Alflonso.mp4",
             "mobile_image": "shopify://shop_images/Untitled_design_17.png",
+            "mobile_video": "shopify://files/videos/videoplayback (2).mp4",
             "height_desktop": 700,
             "height_unit_desktop": "px",
             "height_mobile": 500,
