@@ -2134,7 +2134,7 @@
         "collection": "prankies",
         "layout_type": "grid",
         "carousel_on_mobile": false,
-        "max_products": 8,
+        "max_products": 16,
         "columns": 5,
         "mobile_columns": "2",
         "mobile_card_size": "60cqw",
