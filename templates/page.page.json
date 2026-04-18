@@ -16,7 +16,7 @@
           "type": "text",
           "name": "Title",
           "settings": {
-            "text": "<h1>{{ closest.page.title }}</h1>",
+            "text": "<h1>Manufacturing Details</h1>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "left",
@@ -55,7 +55,7 @@
       "name": "Manufacturer Info Section",
       "settings": {
         "container": "container-fluid",
-        "description": "<p><strong>Mfg.by:</strong><br>For Manufacturing details refer to the first letter of code A/B of the Batch number.</p>",
+        "description": "<p><strong>Mfg.by:</strong><br/>For Manufacturing details refer to the first letter of code A/B of the Batch number.</p>",
         "license_number": "Lic. No.",
         "facebook_link": "",
         "instagram_link": "",
