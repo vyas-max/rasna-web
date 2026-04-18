@@ -1,0 +1,256 @@
+{% schema %}
+{
+  "name": "Scary Pranky Section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Main Banner"
+    },
+    {
+      "type": "image_picker",
+      "id": "banner_image_desktop",
+      "label": "Banner Image (Desktop)"
+    },
+    {
+      "type": "image_picker",
+      "id": "banner_image_mobile",
+      "label": "Banner Image (Mobile)"
+    },
+    {
+      "type": "header",
+      "content": "Packaging 1 (Nutri+)"
+    },
+    {
+      "type": "text",
+      "id": "pack_1_title",
+      "label": "Heading",
+      "default": "Rasna Nutri+ 32 Glasses Pack : Including Fruit Beverage Mix & Flavoured Drink Mix"
+    },
+    {
+      "type": "image_picker",
+      "id": "pack_1_image",
+      "label": "Instruction Image"
+    },
+    {
+      "type": "header",
+      "content": "Packaging 2 (Insta Nutri+)"
+    },
+    {
+      "type": "text",
+      "id": "pack_2_title",
+      "label": "Heading",
+      "default": "Rasna Insta Nutri+ 500g Pack : Instant Fruit Beverage Mix"
+    },
+    {
+      "type": "image_picker",
+      "id": "pack_2_image",
+      "label": "Instruction Image"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Heading",
+      "default": "Terms and Conditions for Rasna Pranky"
+    },
+    {
+      "type": "richtext",
+      "id": "terms_conditions",
+      "label": "Terms & Conditions",
+      
+    }
+  ],
+  "presets": [
+    {
+      "name": "Scary Pranky Section"
+    }
+  ]
+}
+{% endschema %}
+
+<div class="scary-pranky-section">
+  <div class="scary-pranky-banner">
+    {% if section.settings.banner_image_desktop != blank %}
+      <div class="banner-desktop {% if section.settings.banner_image_mobile != blank %}hidden-mobile{% endif %}">
+        {{ section.settings.banner_image_desktop | image_url: width: 2000 | image_tag: loading: 'lazy', width: section.settings.banner_image_desktop.width, height: section.settings.banner_image_desktop.height, class: 'w-full h-auto' }}
+      </div>
+    {% endif %}
+    
+    {% if section.settings.banner_image_mobile != blank %}
+      <div class="banner-mobile {% if section.settings.banner_image_desktop != blank %}hidden-desktop{% endif %}">
+        {{ section.settings.banner_image_mobile | image_url: width: 1000 | image_tag: loading: 'lazy', width: section.settings.banner_image_mobile.width, height: section.settings.banner_image_mobile.height, class: 'w-full h-auto' }}
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="scary-pranky-content page-width">
+    
+    <div class="scary-pranky-packs">
+      {% if section.settings.pack_1_image != blank or section.settings.pack_1_title != blank %}
+        <div class="pack-item">
+          {% if section.settings.pack_1_title != blank %}
+            <h3 class="pack-title">{{ section.settings.pack_1_title }}</h3>
+          {% endif %}
+          
+          {% if section.settings.pack_1_image != blank %}
+            <div class="pack-image">
+               {{ section.settings.pack_1_image | image_url: width: 1200 | image_tag: loading: 'lazy', class: 'w-full h-auto' }}
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if section.settings.pack_2_image != blank or section.settings.pack_2_title != blank %}
+        <div class="pack-item">
+          {% if section.settings.pack_2_title != blank %}
+            <h3 class="pack-title">{{ section.settings.pack_2_title }}</h3>
+          {% endif %}
+          
+          {% if section.settings.pack_2_image != blank %}
+            <div class="pack-image">
+               {{ section.settings.pack_2_image | image_url: width: 1200 | image_tag: loading: 'lazy', class: 'w-full h-auto' }}
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+
+    {% if section.settings.title != blank %}
+      <h2 class="scary-pranky-title">{{ section.settings.title }}</h2>
+    {% endif %}
+    
+    <div class="scary-pranky-text rte">
+      {% if section.settings.terms_conditions != blank %}
+        {{ section.settings.terms_conditions }}
+      {% else %}
+        <p><strong>1. Organizer:</strong> The Contest is organized by Rasna Private Limited (“Rasna”/“Company”), having its registered office at Survey No. 354/1, Village Moraiya, Sanand, Ahmedabad–382110, Gujarat, India.</p>
+        <p><strong>2. Contest Description:</strong> Under this contest, Participants are required to collect a minimum of five (5) Rasna Prankies from eligible Rasna products, create a short prank video featuring friends or family members, and upload the same on Facebook, Instagram, or YouTube, tagging @rasna_international.</p>
+        <p><strong>3. Eligibility:</strong> The contest is open only to Indian citizens, except residents of the State of Tamil Nadu. Participants must comply with these Terms and Conditions.</p>
+        <p><strong>4. Participation by minors and guardian consent:</strong> Participants below the age of eighteen (18) years may participate only with prior consent and supervision of a parent or legal guardian. By submitting an entry, it shall be deemed that such consent has been obtained. The parent or guardian shall be responsible for the minor’s conduct.</p>
+        <p><strong>5. Age Verification:</strong> Rasna reserves the right to request proof of age and identity from the winners to verify eligibility. Failure to provide the requested documents may result in disqualification.</p>
+        <p><strong>6. Acceptance of Terms:</strong> By purchasing an eligible product and/or participating in the contest, Participants unconditionally agree to be bound by these Terms and Conditions.</p>
+        <p><strong>7. Nature of Pranky and Safety Warning:</strong> The Pranky is a non-edible novelty item and is not suitable for ingestion. It may pose a choking hazard. Adult supervision is advised. Rasna shall not be responsible for misuse of the Pranky. Images and depictions of Pranky on packaging or promotional material are for representation purposes only. Actual products may vary.</p>
+        <p><strong>8. Original Content:</strong> Participants must submit original content that they have created themselves. Any form of copyright infringement will lead to immediate disqualification.</p>
+        <p><strong>9. Multiple Entries:</strong> Each Participant is allowed to submit only one entry for the contest. In case of multiple entries, only the first submission will be considered, and the subsequent entries will be disqualified.</p>
+        <p><strong>10. Lawful Conduct:</strong> Participants shall comply with all applicable laws in India and shall not create nuisance, misrepresent facts, invade privacy, cause harm or engage in unlawful activities while participating.</p>
+        <p><strong>11. Disqualification:</strong> Rasna reserves the right to disqualify any entry that does not comply with the stated terms and conditions or violates any rules of the contest.</p>
+        <p><strong>12. Absence of Pranky:</strong> Absence of Pranky from any eligible pack due to manufacturing, packaging or logistical reasons shall not entitle the Participant to any compensation or claim.</p>
+        <p><strong>13. Selection Process:</strong> The selection or Rasna’s internal decision will be final and binding on all Participants. No further correspondence or appeals will be entertained regarding the selection process or its outcome.</p>
+        <p><strong>14. Prizes:</strong> Prizes shall be awarded only to selected winners, subject to availability. Participation does not confer any right to receive a prize. Prizes are non-transferable, non-negotiable, and non-exchangeable.</p>
+        <p><strong>15. Publicity and Consent:</strong> By participating in the contest, the winners agree to the use of their names, photographs, and videos for publicity and promotional purposes related to the contest.</p>
+        <p><strong>16. Right to Cancel or Modify:</strong> Rasna reserves the right to cancel, modify, or suspend the contest with or without any reason including due to unforeseen circumstances or any other reason beyond its control.</p>
+        <p><strong>17. Liability:</strong> Rasna will not be held responsible for any loss, damage or injury incurred during or as a result of participating in the contest or availing of the prizes. Rasna shall not be responsible for technical failures, upload errors, network issues, or platform-related problems.</p>
+        <p><strong>18. Personal Information:</strong> The personal information provided by Participants will be used solely for the purpose of the contest and will be treated with confidentiality and privacy.</p>
+        <p><strong>19. Indemnity:</strong> Participants agree to indemnify and hold Rasna harmless from any claim or demand arising from their participation in the contest or any violation of the terms and conditions.</p>
+        <p><strong>20. Privacy and Data Protection:</strong> Personal information shall be collected and used for verification, administration, and prize distribution in accordance with Rasna’s Privacy Policy available at www.rasna.shop.</p>
+        <p><strong>21. Force Majeure:</strong> Rasna will not be held liable for any failure or delay in the performance of its obligations due to circumstances beyond its reasonable control, such as natural disasters, pandemics, strikes, or government regulations.</p>
+        <p><strong>22. Modification of contest rules:</strong> Rasna reserves the right to modify or amend the contest rules at any time. Participants will be informed of any changes through the official communication channels.</p>
+        <p><strong>23. CCPA Compliance:</strong> The contest complies with the Central Consumer Protection Authority (CCPA) regulations, ensuring the prevention of misleading advertisements and necessary due diligence for the endorsement of advertisements targeted at children.</p>
+        <p><strong>24. Intellectual Property:</strong> All intellectual property rights, including copyrights, trademarks, and any other proprietary rights related to the contest, will be vested with Rasna.</p>
+        <p><strong>25. Communication:</strong> All official communication regarding the contest will be made through the contact information provided by the Participants. Participants are responsible for ensuring that the contact details are accurate and up-to-date.</p>
+        <p><strong>26. Final Authority:</strong> All decisions of Rasna regarding eligibility, participation, selection and interpretation of these Terms shall be final, conclusive and binding.</p>
+        <p><strong>27. Governing Law:</strong> The contest will be governed by the laws of India and any disputes arising out of or in connection with the contest will be subject to the exclusive jurisdiction of the courts in Ahmedabad, Gujarat.</p>
+        <p><strong>28. Contact Information:</strong> For any queries or concerns related to the contest, participants can contact Rasna at the provided contact information.</p>
+        <p><strong>29. Modifications of Terms and Conditions:</strong> Rasna may modify or update these Terms and Conditions from time to time at its sole discretion and is under no obligation to intimate any such modifications to any Participant personally.</p>
+        <p>By participating in the Contest, you signify your agreement to these terms and conditions.</p>
+        <p>Please read them carefully before submitting your entry.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<style>
+  .scary-pranky-section {
+    width: 100%;
+    margin-bottom: 40px;
+  }
+  
+  .scary-pranky-banner img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .scary-pranky-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+  }
+
+  .scary-pranky-packs {
+    margin-bottom: 50px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .pack-item {
+    width: 100%;
+  }
+
+  .pack-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: #000;
+    text-align: center;
+  }
+
+  .pack-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    display: block;
+  }
+
+  .scary-pranky-title {
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 30px;
+    font-weight: bold;
+    color: #333;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+  }
+
+  .scary-pranky-text {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #444;
+  }
+  
+  .scary-pranky-text p {
+    margin-bottom: 15px;
+  }
+  
+  .scary-pranky-text strong {
+    font-weight: 700;
+  }
+
+  @media screen and (min-width: 750px) {
+    .hidden-desktop {
+      display: none !important;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .hidden-mobile {
+      display: none !important;
+    }
+    
+    .scary-pranky-title {
+      font-size: 24px;
+    }
+    
+    .scary-pranky-content {
+      padding: 30px 15px;
+    }
+
+    .pack-title {
+      font-size: 18px;
+    }
+  }
+</style>
