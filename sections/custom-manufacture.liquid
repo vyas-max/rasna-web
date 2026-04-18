@@ -1,0 +1,226 @@
+{%- liquid
+  assign st = section.settings
+
+  assign animation_effect = settings.animations
+  assign animated = false
+  if animation_effect != 'none'
+    assign animated = true
+    if section.settings.animations != 'inherit'
+      assign animation_effect = section.settings.animations
+    endif
+  endif
+
+  assign container = section.settings.container
+  if container == 'w-full'
+    assign container = 'container-full'
+  endif
+-%}
+<section data-section-type="contact-page" data-section-id="{{ section.id }}" class="m-section m-contact-form">
+  <div class="{{ container }}">
+    <div class="m-row{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}">
+      <div class="manufacturer-section">
+        <div class="description">
+          {{ section.settings.description }}
+        </div>
+           {% for block in section.blocks %}
+              {% if block.type == 'manufacturer_point' %}
+                <div class="manufacturer-point">
+                  
+                  <div class="manufacturer-detail-text">
+                    {{ block.settings.detail_text }}
+                  </div>
+
+                  {% if block.settings.manufacturer_logo %}
+                    <img
+                      src="{{ block.settings.manufacturer_logo | image_url }}"
+                      alt="Manufacturer Logo"
+                      class="manufacturer-logo"
+                    >
+                  {% endif %}
+
+                  {% if block.settings.manufacturer_license != blank %}
+                    <p class="manufacturer-license">
+                      {{ block.settings.manufacturer_license }}
+                    </p>
+                  {% endif %}
+
+                </div>
+              {% endif %}
+            {% endfor %}
+
+
+
+        {% if section.settings.license_image %}
+          <img src="{{ section.settings.license_image | image_url }}" alt="License">
+        {% endif %}
+
+        <p>{{ section.settings.license_number }}</p>
+
+        <div class="follow-us-title">
+          {% if section.settings.follow_us_title != blank %}
+            <strong>{{ section.settings.follow_us_title }}</strong>
+          {% else %}
+            <strong>Follow Us:</strong>
+          {% endif %}
+        </div>
+
+        <div class="social-icons">
+          <a href="{{ section.settings.facebook_link }}" target="_blank" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
+              <path d="M22 12a10 10 0 1 0-11.5 9.9v-7h-2v-3h2v-2.3c0-2 1.2-3.1 3-3.1.9 0 1.8.1 1.8.1v2h-1c-1 0-1.3.6-1.3 1.2v1.9h2.6l-.4 3h-2.2v7A10 10 0 0 0 22 12z"/>
+            </svg>
+          </a>
+
+          <a href="{{ section.settings.instagram_link }}" target="_blank" aria-label="Instagram">
+            <svg class="m-svg-icon--medium" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+              <path fill="currentColor" d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"></path>
+            </svg>
+          </a>
+
+          <a href="{{ section.settings.youtube_link }}" target="_blank" aria-label="YouTube">
+            <svg class="m-svg-icon--medium" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+              <path fill="currentColor" d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"></path>
+            </svg>
+          </a>
+        </div>
+
+        <p>{{ section.settings.footer_note }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Manufacturer Info Section",
+  "tag": "section",
+  "settings": [
+     {
+      "type": "select",
+      "id": "container",
+      "label": "Container type",
+      "default": "container-fluid",
+      "options": [
+        {
+          "value": "container-fluid",
+          "label": "Default"
+        },
+        {
+          "value": "w-full",
+          "label": "Full width"
+        },
+        {
+          "value": "container",
+          "label": "Use container box"
+        }
+      ]
+    },
+    {
+  "type": "richtext",
+  "id": "description",
+  "label": "Intro Text",
+  "default": "<p><strong>Mfg.by:</strong><br>For Manufacturing details refer to the first letter of code A/B of the Batch number.</p>"
+},
+
+    {
+      "type": "image_picker",
+      "id": "license_image",
+      "label": "Optional License Image"
+    },
+    {
+      "type": "text",
+      "id": "license_number",
+      "label": "Additional License Number",
+      "default": "Lic. No."
+    },
+    {
+      "type": "url",
+      "id": "facebook_link",
+      "label": "Facebook URL"
+    },
+    {
+      "type": "url",
+      "id": "instagram_link",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "url",
+      "id": "youtube_link",
+      "label": "YouTube URL"
+    },
+    {
+  "type": "text",
+  "id": "follow_us_title",
+  "label": "Social Title",
+  "default": "Follow Us:"
+},
+
+    {
+      "type": "text",
+      "id": "footer_note",
+      "label": "Footer Text",
+      "default": "Rasna Insta and YouTube page link to add"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "manufacturer_point",
+      "name": "Manufacturer Detail Point",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "detail_text",
+          "label": "Manufacturer Detail",
+          "default": "Example: Mfg. by: Company Name, Address, Fssai Lic. No. XXXXX"
+        },
+          {
+      "type": "image_picker",
+      "id": "manufacturer_logo",
+      "label": "Manufacturer Logo"
+    },
+    {
+      "type": "richtext",
+      "id": "manufacturer_license",
+      "label": "License Number",
+      
+    }
+      ]
+    }
+  ],
+  "max_blocks": 20,
+  "presets": [
+    {
+      "name": "Manufacturer Info Section",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+    .manufacturer-section {
+      padding: 2rem 1rem;
+      background-color: #fff;
+    }
+    .manufacturer-section p {
+      margin-bottom: 1rem;
+    }
+    .manufacturer-section img {
+      max-width: 80px;
+      margin-top: 1rem;
+    }
+    .social-icons {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 1rem;
+      margin-bottom: 1rem
+    }
+    .social-icons a svg {
+      width: 24px;
+      height: 24px;
+      fill: #000;
+      transition: fill 0.3s ease;
+    }
+    .follow-us-title {
+    margin-bottom: 12px;
+  }
+{% endstylesheet %}
