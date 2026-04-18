@@ -49,9 +49,24 @@
         "padding-block-start": 40,
         "padding-block-end": 80
       }
+    },
+    "custom_manufacture_r9nVLY": {
+      "type": "custom-manufacture",
+      "name": "Manufacturer Info Section",
+      "settings": {
+        "container": "container-fluid",
+        "description": "<p><strong>Mfg.by:</strong><br>For Manufacturing details refer to the first letter of code A/B of the Batch number.</p>",
+        "license_number": "Lic. No.",
+        "facebook_link": "",
+        "instagram_link": "",
+        "youtube_link": "",
+        "follow_us_title": "Follow Us:",
+        "footer_note": "Rasna Insta and YouTube page link to add"
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "custom_manufacture_r9nVLY"
   ]
 }
