@@ -19,7 +19,7 @@
             "text": "<h1>Manufacturing Details</h1>",
             "width": "100%",
             "max_width": "normal",
-            "alignment": "left",
+            "alignment": "center",
             "type_preset": "h2",
             "font": "var(--font-body--family)",
             "font_size": "1rem",
@@ -37,10 +37,32 @@
             "padding-inline-end": 0
           },
           "blocks": {}
+        },
+        "ai_gen_block_7597893_wHMMH4": {
+          "type": "ai_gen_block_7597893",
+          "settings": {
+            "show_home_icon": false,
+            "home_text": "Home",
+            "separator": ">",
+            "alignment": "center",
+            "desktop_width_percent": 100,
+            "font_size": 14,
+            "spacing": 4,
+            "padding_vertical": 0,
+            "padding_horizontal": 0,
+            "text_color": "#666666",
+            "link_color": "#000000",
+            "link_hover_color": "#a42325",
+            "current_page_color": "#000000",
+            "separator_color": "#999999",
+            "hover_underline": "underline"
+          },
+          "blocks": {}
         }
       },
       "block_order": [
-        "heading"
+        "heading",
+        "ai_gen_block_7597893_wHMMH4"
       ],
       "settings": {
         "content_direction": "column",
@@ -52,16 +74,65 @@
     },
     "custom_manufacture_r9nVLY": {
       "type": "custom-manufacture",
+      "blocks": {
+        "manufacturer_point_pM66bk": {
+          "type": "manufacturer_point",
+          "settings": {
+            "detail_text": "(A) Mfg. by: DAZZLE FOOD AND BEVERAGES PVT. LTD.\nPlot No. 716, Vill-Rukka, Ormanjhi, Ranchi, Ranchi Urban 2, Ranchi, Jharkhand – 835219",
+            "manufacturer_logo": "shopify://shop_images/fssai_logo.png",
+            "manufacturer_license": "<p><strong>Lic. No. 11118001000073</strong></p>"
+          }
+        },
+        "manufacturer_point_9DTcUk": {
+          "type": "manufacturer_point",
+          "settings": {
+            "detail_text": "(B)     Mfg.by:  SBD AGRO FOODS.\n                       Theri Baba Sawan Singh, Hisar Road, Near NH9, Sirsa, Haryana- 125055.",
+            "manufacturer_logo": "shopify://shop_images/fssai_logo.png",
+            "manufacturer_license": "<p><strong>Lic. No. 10818019000120</strong></p>"
+          }
+        },
+        "manufacturer_point_LcMRgD": {
+          "type": "manufacturer_point",
+          "settings": {
+            "detail_text": "(C) Mfg.by:  INDO UNITED NATURALS.\n                     Near Foldez Auto Plot -1, Muscat Road, Village Veraval, Ta, Kotda      \n                     Sangani, Dist. Rajkot. Gujarat –360024.",
+            "manufacturer_logo": "shopify://shop_images/fssai_logo.png",
+            "manufacturer_license": "<p><strong>Lic. No. 10721999000424</strong></p>"
+          }
+        },
+        "manufacturer_point_EA4ckc": {
+          "type": "manufacturer_point",
+          "settings": {
+            "detail_text": "(D) Mfg.by:  SAM FOOD & BEVERAGE\n                     Sila Sindurighopa, Chowkigate, Changsari, \n                     Kamrup Sadar Sub-division, Kamrup Dist., Assam-781101",
+            "manufacturer_logo": "shopify://shop_images/fssai_logo.png",
+            "manufacturer_license": "<p><strong>Lic. No. 10323002000127</strong></p>"
+          }
+        },
+        "manufacturer_point_rPVUek": {
+          "type": "manufacturer_point",
+          "settings": {
+            "detail_text": "(E)  Mfg.by:  JR FOOD PRODUCTS\n                V. Theri Baba Sawan Singh, Hisar Road, Near NH9, Dist. Sirsa, Haryana- 125055",
+            "manufacturer_logo": "shopify://shop_images/fssai_logo.png",
+            "manufacturer_license": "<p><strong>Lic. No. 10818019000121</strong></p>"
+          }
+        }
+      },
+      "block_order": [
+        "manufacturer_point_pM66bk",
+        "manufacturer_point_9DTcUk",
+        "manufacturer_point_LcMRgD",
+        "manufacturer_point_EA4ckc",
+        "manufacturer_point_rPVUek"
+      ],
       "name": "Manufacturer Info Section",
       "settings": {
         "container": "container-fluid",
-        "description": "<p><strong>Mfg.by:</strong><br/>For Manufacturing details refer to the first letter of code A/B of the Batch number.</p>",
-        "license_number": "Lic. No.",
-        "facebook_link": "",
-        "instagram_link": "",
-        "youtube_link": "",
+        "description": "<p><strong>Mfg.by:</strong><br/>For Manufacturing details refer to the first letter of code A/B/C/D/E of the Batch number.</p>",
+        "license_number": "",
+        "facebook_link": "https://www.facebook.com/rasnainternational",
+        "instagram_link": "https://www.instagram.com/rasna_international/",
+        "youtube_link": "https://youtube.com/@rasnainternational?si=E80kq2jv1DVlGGr2",
         "follow_us_title": "Follow Us:",
-        "footer_note": "Rasna Insta and YouTube page link to add"
+        "footer_note": ""
       }
     }
   },
