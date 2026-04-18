@@ -18,26 +18,58 @@
           "settings": {
             "text": "<h1>{{ closest.page.title }}</h1>",
             "width": "100%",
-            "type_preset": "h2"
-          }
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "h2",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
         },
         "page-content": {
           "type": "page-content",
-          "settings": {}
+          "settings": {},
+          "blocks": {}
         }
       },
       "block_order": [
         "heading",
         "page-content"
       ],
+      "disabled": true,
       "settings": {
+        "content_direction": "column",
         "gap": 32,
+        "color_scheme": "",
         "padding-block-start": 40,
         "padding-block-end": 80
+      }
+    },
+    "scary_pranky_JyHgc6": {
+      "type": "scary-pranky",
+      "name": "Scary Pranky Section",
+      "settings": {
+        "pack_1_title": "Rasna Nutri+ 32 Glasses Pack : Including Fruit Beverage Mix & Flavoured Drink Mix",
+        "pack_2_title": "Rasna Insta Nutri+ 500g Pack : Instant Fruit Beverage Mix",
+        "title": "Terms and Conditions for Rasna Pranky",
+        "terms_conditions": ""
       }
     }
   },
   "order": [
-    "main"
+    "main",
+    "scary_pranky_JyHgc6"
   ]
 }
