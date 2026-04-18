@@ -1273,7 +1273,7 @@
         "color_scheme": "",
         "autoplay": false,
         "autoplay_speed": 4,
-        "image_fit": "cover",
+        "image_fit": "contain",
         "section_width": "full-width",
         "slide_height": "large",
         "padding-block-start": 0,
