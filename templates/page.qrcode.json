@@ -62,7 +62,9 @@
       "name": "Scary Pranky Section",
       "settings": {
         "pack_1_title": "Rasna Nutri+ 32 Glasses Pack : Including Fruit Beverage Mix & Flavoured Drink Mix",
+        "pack_1_image": "shopify://shop_images/rasn1231.png",
         "pack_2_title": "Rasna Insta Nutri+ 500g Pack : Instant Fruit Beverage Mix",
+        "pack_2_image": "shopify://shop_images/Rasna1981.png",
         "title": "Terms and Conditions for Rasna Pranky",
         "terms_conditions": ""
       }
