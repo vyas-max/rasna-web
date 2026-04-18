@@ -1124,9 +1124,9 @@
           "settings": {
             "media_type_1": "image",
             "image_1": "shopify://shop_images/Rakul_Preet_Image_Ad.png",
-            "content_direction": "column",
+            "content_direction": "row",
             "vertical_on_mobile": true,
-            "horizontal_alignment": "flex-start",
+            "horizontal_alignment": "center",
             "vertical_alignment": "center",
             "align_baseline": false,
             "horizontal_alignment_flex_direction_column": "center",
