@@ -1126,7 +1126,7 @@
             "height_unit_desktop": "px",
             "height_mobile": 350,
             "height_unit_mobile": "px",
-            "object_fit": "cover",
+            "object_fit": "contain",
             "focal_point_horizontal": "center",
             "focal_point_vertical": "center",
             "show_overlay": true,
