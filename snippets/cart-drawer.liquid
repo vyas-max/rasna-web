@@ -40,70 +40,182 @@
         class="cart-items-component"
         data-section-id="{{ section.id }}"
       >
-        {%- if cart.empty? -%}
-          <div class="cart-drawer__header">
-            <button
-              ref="closeButton"
-              on:click="cart-drawer-component/close"
-              class="button close-button cart-drawer__close-button button-unstyled"
-              aria-label="{{ 'actions.close_dialog' | t }}"
-            >
-              <span class="svg-wrapper">
-                {{- 'icon-close.svg' | inline_asset_content -}}
-              </span>
-            </button>
-          </div>
-
-          <div
-            class="cart-drawer__content motion-reduce"
-            aria-label="{{ 'accessibility.cart' | t }}"
-          >
-            <span class="cart-drawer__heading h3 cart-drawer__heading--empty">
-              {{ 'content.your_cart_is_empty' | t }}
-            </span>
-
-            <div class="cart-drawer__items">
-              {% render 'cart-products' %}
-            </div>
-          </div>
-        {%- else -%}
-          <div
-            class="cart-drawer__header"
-            id="cart-drawer-header"
-          >
-            <span class="cart-drawer__heading h3">
-              {{ 'content.cart_title' | t }}
+        <div class="cart-drawer__header">
+          <span class="cart-drawer__heading">
+            {%- if cart.empty? -%}
+              YOUR CART IS EMPTY
+            {%- else -%}
+              YOUR CART
               {% render 'cart-bubble' %}
+            {%- endif -%}
+          </span>
+          <button
+            ref="closeButton"
+            on:click="cart-drawer-component/close"
+            class="button close-button cart-drawer__close-button button-unstyled"
+            aria-label="{{ 'actions.close_dialog' | t }}"
+          >
+            <span class="svg-wrapper">
+              {{- 'icon-close.svg' | inline_asset_content -}}
             </span>
+          </button>
+        </div>
 
-            <button
-              ref="closeButton"
-              on:click="cart-drawer-component/close"
-              class="button close-button cart-drawer__close-button button-unstyled"
-              aria-label="{{ 'actions.close_dialog' | t }}"
-            >
-              <span class="svg-wrapper">
-                {{- 'icon-close.svg' | inline_asset_content -}}
-              </span>
-            </button>
+        <div
+          class="cart-drawer__content motion-reduce"
+          aria-label="{{ 'accessibility.cart' | t }}"
+        >
+          {%- if cart.empty? -%}
+            <div class="cart-drawer__empty-state">
+              <div class="cart-drawer__items--empty">
+                <div class="cart-drawer__empty-message">
+                  <h2>Your cart is empty</h2>
+                  <p>Have an account? <a href="{{ routes.account_login_url }}" class="login-link">Log in</a> to check out faster.</p>
+                  <a href="{{ routes.all_products_collection_url }}" class="button cart-drawer__continue-btn">
+                    Continue shopping
+                  </a>
+                </div>
+              </div>
+              
+              <div class="cart-drawer__recommendations">
+                <div class="cart-drawer__recommendations-header">
+                  <h4 class="cart-drawer__recommendations-title">You might also like</h4>
+                  <div class="cart-drawer__slider-nav">
+                    <button class="cart-drawer__slider-arrow" onclick="scrollSlider(this, -1)" aria-label="Previous">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+                    </button>
+                    <button class="cart-drawer__slider-arrow" onclick="scrollSlider(this, 1)" aria-label="Next">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+                    </button>
+                  </div>
+                </div>
+                <div class="cart-drawer__recommendations-slider">
+                  {%- for product in collections.all.products limit: 10 -%}
+                    <div class="cart-drawer__recommendation-item">
+                      <a href="{{ product.url }}" class="cart-drawer__recommendation-link">
+                        <div class="cart-drawer__recommendation-image border-style">
+                          {{ product.featured_image | image_url: width: 200 | image_tag: loading: 'lazy' }}
+                        </div>
+                        <div class="cart-drawer__recommendation-info">
+                          <span class="cart-drawer__recommendation-name">{{ product.title }}</span>
+                          <span class="cart-drawer__recommendation-price">{{ product.price | money }}</span>
+                        </div>
+                      </a>
+                      <product-form-component data-product-id="{{ product.id }}">
+                        {%- form 'product', product -%}
+                          <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}" ref="variantId">
+                          <button type="submit" name="add" class="button cart-drawer__recommendation-add" on:click="product-form-component/handleSubmit">
+                            ADD
+                          </button>
+                          <div class="hidden" ref="liveRegion" aria-live="polite"></div>
+                        {%- endform -%}
+                      </product-form-component>
+                    </div>
+                  {%- endfor -%}
+                </div>
+              </div>
+            </div>
+          {%- else -%}
+            <scroll-hint class="cart-drawer__items-container">
+              <div class="cart-drawer__items">
+                {% render 'cart-products' %}
+              </div>
+
+              <div class="cart-drawer__upsells">
+                <div class="cart-drawer__recommendations-header">
+                  <h4 class="cart-drawer__recommendations-title">You might also like</h4>
+                  <div class="cart-drawer__slider-nav">
+                    <button class="cart-drawer__slider-arrow" onclick="scrollSlider(this, -1)" aria-label="Previous">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+                    </button>
+                    <button class="cart-drawer__slider-arrow" onclick="scrollSlider(this, 1)" aria-label="Next">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+                    </button>
+                  </div>
+                </div>
+                <div class="cart-drawer__recommendations-slider">
+                  {%- liquid
+                    assign cart_ids = cart.items | map: 'product_id'
+                    assign upsell_count = 0
+                  -%}
+                  {%- for product in collections.all.products -%}
+                    {%- unless cart_ids contains product.id -%}
+                      <div class="cart-drawer__recommendation-item">
+                        <a href="{{ product.url }}" class="cart-drawer__recommendation-link">
+                          <div class="cart-drawer__recommendation-image border-style">
+                            {{ product.featured_image | image_url: width: 200 | image_tag: loading: 'lazy' }}
+                          </div>
+                          <div class="cart-drawer__recommendation-info">
+                            <span class="cart-drawer__recommendation-name">{{ product.title }}</span>
+                            <span class="cart-drawer__recommendation-price">{{ product.price | money }}</span>
+                          </div>
+                        </a>
+                        <product-form-component data-product-id="{{ product.id }}">
+                          {%- form 'product', product -%}
+                            <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}" ref="variantId">
+                            <button type="submit" name="add" class="button cart-drawer__recommendation-add" on:click="product-form-component/handleSubmit">
+                              ADD
+                            </button>
+                            <div class="hidden" ref="liveRegion" aria-live="polite"></div>
+                          {%- endform -%}
+                        </product-form-component>
+                      </div>
+                      {%- assign upsell_count = upsell_count | plus: 1 -%}
+                      {%- if upsell_count >= 10 -%}{% break %}{%- endif -%}
+                    {%- endunless -%}
+                  {%- endfor -%}
+                </div>
+              </div>
+
+              {%- comment -%} Available Offers Accordion (Repositioned) {%- endcomment -%}
+              <details class="cart-drawer__coupons">
+                <summary>
+                  <span>Available Offers</span>
+                  <span class="accordion-icon">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M6 9l6 6 6-6"/>
+                    </svg>
+                  </span>
+                </summary>
+                
+                <div class="cart-drawer__coupons-content">
+                  <div class="cart-drawer__slider-nav" style="justify-content: flex-end; margin-bottom: 15px;">
+                    <button class="cart-drawer__slider-arrow" onclick="scrollSlider(this, -1)" aria-label="Previous">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+                    </button>
+                    <button class="cart-drawer__slider-arrow" onclick="scrollSlider(this, 1)" aria-label="Next">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+                    </button>
+                  </div>
+                  <div class="cart-drawer__coupons-slider" id="coupons-slider">
+                    <div class="cart-drawer__coupon-item">
+                      <div class="cart-drawer__coupon-content">
+                        <span class="cart-drawer__coupon-value">25% OFF</span>
+                        <span class="cart-drawer__coupon-condition">Min purchase ₹200,000.00</span>
+                      </div>
+                      <div class="cart-drawer__coupon-code-wrapper">
+                        <code class="cart-drawer__coupon-code">CAIT25OFF</code>
+                        <button class="cart-drawer__coupon-copy" onclick="copyCoupon(this, 'CAIT25OFF')">Copy</button>
+                      </div>
+                    </div>
+                    <div class="cart-drawer__coupon-item">
+                      <div class="cart-drawer__coupon-content">
+                        <span class="cart-drawer__coupon-value">15% OFF</span>
+                        <span class="cart-drawer__coupon-condition">Min purchase ₹25,000.00</span>
+                      </div>
+                      <div class="cart-drawer__coupon-code-wrapper">
+                        <code class="cart-drawer__coupon-code">CAIT15OFF</code>
+                        <button class="cart-drawer__coupon-copy" onclick="copyCoupon(this, 'CAIT15OFF')">Copy</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </details>
+            </scroll-hint>
           </div>
 
-          <div
-            class="cart-drawer__content motion-reduce"
-            aria-label="{{ 'accessibility.cart' | t }}"
-            style="--header-height: 60px;"
-          >
-            <scroll-hint
-              class="cart-drawer__items"
-            >
-              {% render 'cart-products' %}
-            </scroll-hint>
-
-            <div
-              class="cart-drawer__summary"
-            >
-              {% render 'cart-summary' %}
-            </div>
+          <div class="cart-drawer__summary">
+            {% render 'cart-summary' %}
           </div>
         {%- endif -%}
       </cart-items-component>
@@ -112,61 +224,652 @@
 </cart-drawer-component>
 
 {% stylesheet %}
+  .cart-drawer__dialog {
+    background: #ffffff !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border-left: 1px solid rgba(var(--color-foreground-rgb), 0.1);
+    border-right: none !important;
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.05);
+    margin: 0 0 0 auto !important;
+    width: 420px !important; /* Slightly wider for better spacing */
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+  }
+
+  @media screen and (max-width: 749px) {
+    .cart-drawer__dialog {
+      width: 100% !important;
+    }
+  }
+
+  .cart-drawer__inner {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
   .cart-items-component {
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
-  }
-
-  .cart-drawer__heading .cart-bubble {
-    width: fit-content;
-    border-radius: var(--style-border-radius-buttons-primary);
-    aspect-ratio: auto;
-    padding: var(--cart-padding);
-  }
-
-  .cart-drawer__heading .cart-bubble[data-maintain-ratio] {
-    aspect-ratio: 1;
-    min-width: 26px;
+    flex: 1; /* Ensure it fills the inner container */
   }
 
   .cart-drawer__header {
-    background-color: var(--color-background);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 100%;
-    padding: var(--cart-drawer-padding);
-    border-bottom: var(--style-border-width) solid none;
-    position: sticky;
-    top: 0;
-    z-index: 1;
-
-    @media screen and (min-width: 750px) {
-      padding: var(--cart-drawer-padding-desktop);
-    }
+    padding: 20px 25px; /* More spacing */
+    border-bottom: 2px solid rgba(var(--color-foreground-rgb), 0.03);
   }
 
-  .cart-drawer__dialog {
-    overflow: hidden;
+  .cart-drawer__heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    color: #000;
+    text-transform: uppercase;
   }
 
-  .cart-drawer__inner {
-    height: 100%;
-    overflow: hidden;
+  .cart-drawer__heading .cart-bubble {
+    font-size: 12px;
+    width: 24px;
+    height: 24px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f0f0f0;
+    border-radius: 50%;
   }
 
   .cart-drawer__content {
-    height: calc(100% - var(--header-height));
+    flex: 1;
+    overflow-y: hidden;
     display: flex;
     flex-direction: column;
   }
 
-  .cart-drawer__summary {
-    background-color: var(--color-background);
-    position: sticky;
-    bottom: 0;
+  /* Empty State Layout */
+  .cart-drawer__empty-state {
+    padding: 40px 30px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    gap: 60px;
+  }
+
+  .cart-drawer__empty-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .cart-drawer__empty-message h2 {
+    font-size: 24px;
+    font-weight: 500;
+    margin: 0;
+    text-transform: none;
+  }
+
+  .cart-drawer__empty-message p {
+    font-size: 14px;
+    color: rgba(var(--color-foreground-rgb), 0.6);
+    margin: 0;
+    max-width: 250px;
+    line-height: 1.5;
+  }
+
+  .cart-drawer__empty-message a.login-link {
+    text-decoration: underline;
+    color: inherit;
+    font-weight: 400;
+  }
+
+  .cart-drawer__continue-btn {
+    margin-top: 20px;
+    background: #000000 !important;
+    color: #ffffff !important;
+    border-radius: 50px !important;
+    padding: 12px 30px !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    text-transform: none !important;
+    border: none !important;
+    min-height: auto !important;
+    width: fit-content !important;
+  }
+
+  .cart-drawer__recommendations {
+    margin-top: auto;
+    text-align: left;
+    padding-top: 30px;
+    border-top: 1px solid rgba(var(--color-foreground-rgb), 0.05);
+  }
+
+  .cart-drawer__recommendations-title {
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #000;
+  }
+
+  .cart-drawer__recommendations-slider {
+    display: flex;
+    overflow-x: auto;
+    gap: 15px;
+    padding-bottom: 10px;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .cart-drawer__recommendations-slider::-webkit-scrollbar {
+    display: none;
+  }
+
+  .cart-drawer__recommendation-item {
+    flex: 0 0 260px; /* Maintain compact horizontal item in a slider */
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    background: #fdfdfd;
+    padding: 10px;
+    border: 1px solid rgba(var(--color-foreground-rgb), 0.05);
+    border-radius: 8px;
+    align-items: center;
+  }
+
+  .cart-drawer__recommendation-link {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    flex: 1;
+    text-decoration: none;
+    align-items: center;
+  }
+
+  .cart-drawer__recommendation-image {
+    width: 60px; /* Much smaller image */
+    height: 60px;
+    flex-shrink: 0;
+    overflow: hidden;
+    background: #f9f9f9;
+    border-radius: 4px;
+    position: relative;
+  }
+
+  .cart-drawer__recommendation-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .cart-drawer__recommendation-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    text-align: left;
+    flex: 1;
+  }
+
+  .cart-drawer__recommendation-name {
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.3;
+    color: #000;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    height: auto;
+    max-height: 28px;
+  }
+
+  .cart-drawer__recommendation-price {
+    font-size: 10px;
+    color: #777;
+    font-weight: 400;
+  }
+
+  .cart-drawer__recommendation-add {
+    margin-top: 0;
+    background: #ff6a39 !important;
+    color: #ffffff !important;
+    border-radius: 4px !important;
+    padding: 6px 10px !important;
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    border: none !important;
+    min-height: auto !important;
+    width: auto !important; /* Not full width */
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  .cart-drawer__recommendation-add:hover {
+    background: #e55a2d !important;
+  }
+
+  .cart-drawer__coupons summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-foreground);
+    background: #fff;
+    border-top: 1px solid rgba(var(--color-foreground-rgb), 0.05);
+    border-bottom: 1px solid rgba(var(--color-foreground-rgb), 0.05);
+    user-select: none;
+  }
+
+  .cart-drawer__coupons summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .cart-drawer__coupons summary .accordion-icon {
+    transition: transform 0.3s ease;
+    width: 12px;
+    height: 12px;
+  }
+
+  .cart-drawer__coupons[open] summary .accordion-icon {
+    transform: rotate(180deg);
+  }
+
+  .cart-drawer__coupons-content {
+    background: #fdfdfd;
+  }
+
+  .cart-drawer__coupons {
+    margin-top: 0px;
+    border-bottom: 1px solid rgba(var(--color-foreground-rgb), 0.05);
+  }
+
+  .cart-drawer__coupons-slider {
+    display: flex;
+    overflow-x: auto;
+    gap: 15px;
+    padding-bottom: 10px;
+    scrollbar-width: none;
+    scroll-snap-type: x mandatory;
+  }
+
+  .cart-drawer__coupons-slider::-webkit-scrollbar {
+    display: none;
+  }
+
+  .cart-drawer__coupon-item {
+    flex: 0 0 260px;
+    scroll-snap-align: start;
+    background: #fff;
+    border: 1px dashed rgba(var(--color-foreground-rgb), 0.2);
+    border-radius: 8px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cart-drawer__coupon-item::before,
+  .cart-drawer__coupon-item::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 1px dashed rgba(var(--color-foreground-rgb), 0.1);
     z-index: 1;
   }
+
+  .cart-drawer__coupon-item::before { left: -11px; }
+  .cart-drawer__coupon-item::after { right: -11px; }
+
+  .cart-drawer__coupon-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .cart-drawer__coupon-value {
+    font-size: 12px;
+    font-weight: 700;
+    color: #ff6a39;
+  }
+
+  .cart-drawer__coupon-condition {
+    font-size: 11px;
+    color: rgba(var(--color-foreground-rgb), 0.6);
+  }
+
+  .cart-drawer__coupon-code-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f9f9f9;
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid rgba(var(--color-foreground-rgb), 0.05);
+  }
+
+  .cart-drawer__coupon-code {
+    font-family: monospace;
+    font-size: 13px;
+    font-weight: 700;
+    color: #000;
+    letter-spacing: 0.05em;
+  }
+
+  .cart-drawer__coupon-copy {
+    background: #000 !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 4px !important;
+    padding: 4px 10px !important;
+    font-size: 10px !important;
+    font-weight: 600 !important;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.2s ease;
+  }
+
+  .cart-drawer__coupon-copy.copied {
+    background: #ff6a39 !important;
+  }
+
+  .cart-drawer__recommendations-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0px;
+    margin-top: 0px;
+  }
+
+  .cart-drawer__slider-nav {
+    display: flex;
+    gap: 8px;
+  }
+
+  .cart-drawer__slider-arrow {
+    background: #f4f4f4 !important;
+    color: #000 !important;
+    border: none !important;
+    border-radius: 50% !important;
+    width: 28px !important;
+    height: 28px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0 !important;
+    min-height: auto !important;
+    transition: background 0.2s ease;
+  }
+
+  .cart-drawer__slider-arrow:hover {
+    background: #e5e5e5 !important;
+  }
+
+  .cart-drawer__slider-arrow svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* Active State Styling */
+  .cart-drawer__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 25px;
+    border-bottom: 1px solid rgba(var(--color-foreground-rgb), 0.05);
+  }
+
+  .cart-drawer__heading {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: #000;
+    text-transform: uppercase;
+  }
+
+  .cart-drawer__content {
+    flex: 1;
+    overflow-y: hidden; /* We'll use internal scrolls */
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Empty State Layout */
+  .cart-drawer__empty-state {
+    padding: 30px 25px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    gap: 40px;
+    overflow-y: auto;
+  }
+
+  /* Active State Layout */
+  .cart-drawer__items-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    padding: 0;
+  }
+
+  .cart-drawer__items {
+    overflow-y: auto;
+    max-height: 40dvh;
+    border-bottom: 1px solid rgba(var(--color-foreground-rgb), 0.05);
+  }
+
+  /* Override cart-products layout for the drawer context */
+  .cart-drawer__items .cart-items__table-row {
+    margin-bottom: 20px !important;
+    padding-bottom: 20px !important;
+    border-bottom: 1px solid rgba(var(--color-foreground-rgb), 0.05);
+    display: grid;
+    grid-template-columns: 70px 1fr auto auto; 
+    column-gap: 8px; /* Reduced from 15px */
+    row-gap: 6px;
+    align-items: center;
+  }
+
+  /* Use display: contents to allow children to participate in the row grid */
+  .cart-drawer__items .cart-items__media,
+  .cart-drawer__items .cart-items__details,
+  .cart-drawer__items .cart-items__quantity,
+  .cart-drawer__items .cart-items__price {
+    display: contents;
+  }
+
+  .cart-drawer__items .cart-items__media-container {
+    grid-column: 1;
+    grid-row: 1 / 3;
+    width: 70px;
+    height: 70px;
+  }
+
+  .cart-drawer__items .cart-items__title {
+    grid-column: 2;
+    grid-row: 1;
+    font-size: 13px;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .cart-drawer__items .cart-items__details > div {
+    /* Unit Price */
+    grid-column: 2;
+    grid-row: 2;
+    font-size: 11px;
+    color: #888;
+  }
+
+  .cart-drawer__items .quantity-selector {
+    grid-column: 3;
+    grid-row: 2;
+    height: 28px !important;
+    width: 90px !important;
+    border-radius: 4px;
+    background: #f4f4f4;
+    border: 1px solid #eee;
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+  }
+
+  /* Price Positioning */
+  .cart-drawer__items .cart-items__price {
+    /* The TD itself has display: contents, so we target the child */
+  }
+
+  .cart-drawer__items .cart-items__price text-component {
+    grid-column: 3;
+    grid-row: 1;
+    text-align: right;
+    font-size: 15px; /* Bigger price */
+    font-weight: 800;
+    color: #000;
+    line-height: 1;
+  }
+
+  .cart-drawer__items .cart-items__remove {
+    grid-column: 4;
+    grid-row: 2; /* Aligned with quantity selector */
+    width: 32px !important;
+    height: 32px !important;
+    color: #888;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    background: transparent !important;
+    border: none !important;
+    cursor: pointer;
+    margin-left: 10px;
+    margin-top: -2px; /* Visual centering adjustment */
+  }
+
+  .cart-drawer__items .cart-items__remove:hover {
+    color: #ff6a39;
+  }
+
+  .cart-drawer__items .cart-items__remove svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  /* Clean up internal selector styles */
+  .cart-drawer__items .quantity-selector button {
+    width: 30px !important;
+    height: 100% !important;
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    cursor: pointer;
+    min-height: auto !important;
+  }
+
+  .cart-drawer__items .quantity-selector input {
+    width: 30px !important;
+    height: 100% !important;
+    font-size: 11px !important;
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    text-align: center;
+  }
+
+  .cart-drawer__coupons {
+    border-bottom: 1px solid rgba(var(--color-foreground-rgb), 0.05);
+  }
+
+  .cart-drawer__upsells {
+    padding-bottom: 20px;
+  }
+
+  .cart-drawer__summary {
+   
+    background: #ffffff;
+    border-top: 1px solid rgba(var(--color-foreground-rgb), 0.1);
+    box-shadow: 0 -10px 20px rgba(0,0,0,0.02);
+    z-index: 10;
+  }
 {% endstylesheet %}
+
+<script>
+  function copyCoupon(button, code) {
+    if (!navigator.clipboard) {
+      const textArea = document.createElement("textarea");
+      textArea.value = code;
+      document.body.appendChild(textArea);
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        showSuccess(button);
+      } catch (err) {
+        console.error('Fallback: Oops, unable to copy', err);
+      }
+      document.body.removeChild(textArea);
+      return;
+    }
+    navigator.clipboard.writeText(code).then(() => {
+      showSuccess(button);
+    }, (err) => {
+      console.error('Async: Could not copy text: ', err);
+    });
+  }
+
+  function scrollSlider(button, direction) {
+    const header = button.closest('.cart-drawer__recommendations-header');
+    const container = header.nextElementSibling;
+    const scrollAmount = container.clientWidth * 0.8;
+    container.scrollBy({
+      left: direction * scrollAmount,
+      behavior: 'smooth'
+    });
+  }
+
+  function showSuccess(button) {
+    const originalText = button.textContent;
+    button.textContent = 'Copied!';
+    button.classList.add('copied');
+    setTimeout(() => {
+      button.textContent = originalText;
+      button.classList.remove('copied');
+    }, 2000);
+  }
+</script>
+
+
+
+

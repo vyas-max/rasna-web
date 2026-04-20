@@ -166,8 +166,19 @@ class ProductFormComponent extends Component {
 
     if (this.#timeout) clearTimeout(this.#timeout);
 
+    // Get the button that triggered the submit
+    const submitButton = event.submitter || this.querySelector('button[type="submit"]');
+    const originalButtonText = submitButton?.textContent?.trim();
+
     // Check if the add to cart button is disabled and do an early return if it is
-    if (this.refs.addToCartButtonContainer?.refs.addToCartButton?.getAttribute('disabled') === 'true') return;
+    if (this.refs.addToCartButtonContainer?.refs.addToCartButton?.getAttribute('disabled') === 'true' || submitButton?.disabled) return;
+
+    // Provide instant visual feedback
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.dataset.originalText = originalButtonText;
+      submitButton.textContent = 'ADDING...';
+    }
 
     // Send the add to cart information to the cart
     const form = this.querySelector('form');
@@ -176,104 +187,48 @@ class ProductFormComponent extends Component {
 
     const formData = new FormData(form);
 
-    const cartItemsComponents = document.querySelectorAll('cart-items-component');
-    let cartItemComponentsSectionIds = [];
-    cartItemsComponents.forEach((item) => {
-      if (item instanceof HTMLElement && item.dataset.sectionId) {
-        cartItemComponentsSectionIds.push(item.dataset.sectionId);
-      }
-      formData.append('sections', cartItemComponentsSectionIds.join(','));
-    });
-
+    // We don't request sections here to keep it fast
     const fetchCfg = fetchConfig('javascript', { body: formData });
 
     fetch(Theme.routes.cart_add_url, {
       ...fetchCfg,
       headers: {
         ...fetchCfg.headers,
-        Accept: 'text/html',
+        Accept: 'application/json',
       },
     })
       .then((response) => response.json())
       .then((response) => {
-        if (response.status) {
-          this.dispatchEvent(
-            new CartErrorEvent(form.getAttribute('id') || '', response.message, response.description, response.errors)
-          );
-
-          if (!addToCartTextError) return;
-          addToCartTextError.classList.remove('hidden');
-
-          // Reuse the text node if the user is spam-clicking
-          const textNode = addToCartTextError.childNodes[2];
-          if (textNode) {
-            textNode.textContent = response.message;
-          } else {
-            const newTextNode = document.createTextNode(response.message);
-            addToCartTextError.appendChild(newTextNode);
-          }
-
-          // Create or get existing error live region for screen readers
-          this.#setLiveRegionText(response.message);
-
-          this.#timeout = setTimeout(() => {
-            if (!addToCartTextError) return;
-            addToCartTextError.classList.add('hidden');
-
-            // Clear the announcement
-            this.#clearLiveRegionText();
-          }, 10000);
-
-          // When we add more than the maximum amount of items to the cart, we need to dispatch a cart update event
-          // because our back-end still adds the max allowed amount to the cart.
-          this.dispatchEvent(
-            new CartAddEvent({}, this.id, {
-              didError: true,
-              source: 'product-form-component',
-              itemCount: Number(formData.get('quantity')) || Number(this.dataset.quantityDefault),
-              productId: this.dataset.productId,
-            })
-          );
-
-          return;
-        } else {
-          const id = formData.get('id');
-
-          if (addToCartTextError) {
-            addToCartTextError.classList.add('hidden');
-            addToCartTextError.removeAttribute('aria-live');
-          }
-
-          if (!id) throw new Error('Form ID is required');
-
-          // Add aria-live region to inform screen readers that the item was added
-          if (this.refs.addToCartButtonContainer?.refs.addToCartButton) {
-            const addToCartButton = this.refs.addToCartButtonContainer.refs.addToCartButton;
-            const addedTextElement = addToCartButton.querySelector('.add-to-cart-text--added');
-            const addedText = addedTextElement?.textContent?.trim() || Theme.translations.added;
-
-            this.#setLiveRegionText(addedText);
-
-            setTimeout(() => {
-              this.#clearLiveRegionText();
-            }, 5000);
-          }
-
-          this.dispatchEvent(
-            new CartAddEvent({}, id.toString(), {
-              source: 'product-form-component',
-              itemCount: Number(formData.get('quantity')) || Number(this.dataset.quantityDefault),
-              productId: this.dataset.productId,
-              sections: response.sections,
-            })
-          );
+        if (response.status && response.status !== 200) {
+          throw new Error(response.description || response.message || 'Error adding to cart');
         }
+
+        const id = response.id || formData.get('id');
+        if (!id) throw new Error('Product ID not found in response');
+
+        // Success: Dispatch event to refresh the cart
+        this.dispatchEvent(
+          new CartAddEvent(response, id.toString(), {
+            source: 'product-form-component',
+            itemCount: response.quantity,
+            productId: this.dataset.productId,
+          })
+        );
       })
       .catch((error) => {
-        console.error(error);
+        console.error('Cart Add Error:', error);
+        if (addToCartTextError) {
+          addToCartTextError.textContent = error.message;
+          addToCartTextError.classList.remove('hidden');
+          setTimeout(() => addToCartTextError.classList.add('hidden'), 5000);
+        }
       })
       .finally(() => {
-        // add more thing to do in here if needed.
+        // Reset button state
+        if (submitButton) {
+          submitButton.disabled = false;
+          submitButton.textContent = submitButton.dataset.originalText || originalButtonText || 'ADD';
+        }
         cartPerformance.measureFromEvent('add:user-action', event);
       });
   }
