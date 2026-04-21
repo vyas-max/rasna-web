@@ -187,7 +187,17 @@ class ProductFormComponent extends Component {
 
     const formData = new FormData(form);
 
-    // We don't request sections here to keep it fast
+    // Collect section IDs from all cart-items-components so Shopify returns
+    // updated HTML in the same response — avoids a second network request.
+    const cartSectionIds = new Set();
+    document.querySelectorAll('cart-items-component[data-section-id]').forEach((el) => {
+      cartSectionIds.add(el.dataset.sectionId);
+    });
+    if (cartSectionIds.size > 0) {
+      formData.append('sections', Array.from(cartSectionIds).join(','));
+      formData.append('sections_url', window.location.pathname);
+    }
+
     const fetchCfg = fetchConfig('javascript', { body: formData });
 
     fetch(Theme.routes.cart_add_url, {
@@ -206,12 +216,13 @@ class ProductFormComponent extends Component {
         const id = response.id || formData.get('id');
         if (!id) throw new Error('Product ID not found in response');
 
-        // Success: Dispatch event to refresh the cart
+        // Success: Dispatch event with sections so cart drawer updates instantly
         this.dispatchEvent(
           new CartAddEvent(response, id.toString(), {
             source: 'product-form-component',
             itemCount: response.quantity,
             productId: this.dataset.productId,
+            sections: response.sections,
           })
         );
       })
