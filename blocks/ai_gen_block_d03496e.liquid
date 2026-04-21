@@ -183,6 +183,55 @@
       font-size: {{ block.settings.button_text_size | times: 0.9 }}px;
     }
   }
+
+  .ai-hero-banner__audio-toggle-{{ ai_gen_id }} {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    z-index: 10;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    transition: all 0.3s ease;
+    color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .ai-hero-banner__audio-toggle-{{ ai_gen_id }}:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+  }
+
+  .ai-hero-banner__audio-toggle-{{ ai_gen_id }} svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+  }
+
+  .ai-hero-banner__audio-toggle-{{ ai_gen_id }}[data-muted="true"] .ai-hero-banner__unmute-icon-{{ ai_gen_id }} {
+    display: block;
+  }
+
+  .ai-hero-banner__audio-toggle-{{ ai_gen_id }}[data-muted="true"] .ai-hero-banner__mute-icon-{{ ai_gen_id }} {
+    display: none;
+  }
+
+  .ai-hero-banner__audio-toggle-{{ ai_gen_id }}[data-muted="false"] .ai-hero-banner__unmute-icon-{{ ai_gen_id }} {
+    display: none;
+  }
+
+  .ai-hero-banner__audio-toggle-{{ ai_gen_id }}[data-muted="false"] .ai-hero-banner__mute-icon-{{ ai_gen_id }} {
+    display: block;
+  }
 {% endstyle %}
 
 <hero-banner-{{ ai_gen_id }} class="ai-hero-banner-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
@@ -297,6 +346,17 @@
       <div class="ai-hero-banner__overlay-{{ ai_gen_id }}"></div>
     {% endif %}
 
+    {% if block.settings.desktop_video != blank or block.settings.mobile_video != blank %}
+      <button class="ai-hero-banner__audio-toggle-{{ ai_gen_id }}" aria-label="Toggle Audio" type="button" data-muted="true">
+        <span class="ai-hero-banner__mute-icon-{{ ai_gen_id }}">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11 5L6 9H2V15H6L11 19V5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M19.07 4.93C20.9447 6.80528 21.9979 9.34836 21.9979 12C21.9979 14.6516 20.9447 17.1947 19.07 19.07M15.54 8.46C16.4771 9.40003 17.004 10.6723 17.004 12C17.004 13.3277 16.4771 14.5999 15.54 15.54" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+        </span>
+        <span class="ai-hero-banner__unmute-icon-{{ ai_gen_id }}">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11 5L6 9H2V15H6L11 19V5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M23 9L17 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M17 9L23 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+        </span>
+      </button>
+    {% endif %}
+
     <div class="ai-hero-banner__content-{{ ai_gen_id }}">
       {% if block.settings.heading != blank %}
         <h1 class="ai-hero-banner__heading-{{ ai_gen_id }}">{{ block.settings.heading }}</h1>
@@ -324,12 +384,25 @@
 
       connectedCallback() {
         this.videos = this.querySelectorAll('video');
+        this.audioToggle = this.querySelector('.ai-hero-banner__audio-toggle-{{ ai_gen_id }}');
         this.setupVideos();
+        this.setupAudioToggle();
       }
 
       setupVideos() {
         this.videos.forEach((video) => {
           video.play().catch(() => {});
+        });
+      }
+
+      setupAudioToggle() {
+        if (!this.audioToggle) return;
+        this.audioToggle.addEventListener('click', () => {
+          const isMuted = this.videos[0].muted;
+          this.videos.forEach(video => {
+            video.muted = !isMuted;
+          });
+          this.audioToggle.setAttribute('data-muted', !isMuted);
         });
       }
     }
