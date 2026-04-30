@@ -54,6 +54,11 @@
           "enable_defer_loading": false,
           "enable_corner_test_campaigns": true
         }
+      },
+      "9987108931664557417": {
+        "type": "shopify://apps/ea-upsell-offers/blocks/app-embed-block/1b9209bc-699e-4ddf-8036-d2d15e654819",
+        "disabled": false,
+        "settings": {}
       }
     },
     "color_schemes": {
