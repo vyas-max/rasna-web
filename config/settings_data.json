@@ -59,6 +59,11 @@
         "type": "shopify://apps/ea-upsell-offers/blocks/app-embed-block/1b9209bc-699e-4ddf-8036-d2d15e654819",
         "disabled": false,
         "settings": {}
+      },
+      "18155451270687726080": {
+        "type": "shopify://apps/snap-cart-drawer/blocks/sticky_button/749c3d78-31de-41bb-a321-492d569e1a37",
+        "disabled": true,
+        "settings": {}
       }
     },
     "color_schemes": {
