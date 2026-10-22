@@ -114,6 +114,62 @@
             "manufacturer_logo": "shopify://shop_images/fssai_logo.png",
             "manufacturer_license": "<p><strong>Lic. No. 10818019000121</strong></p>"
           }
+        },
+        "manufacturer_point_cXrhBn": {
+          "type": "manufacturer_point",
+          "settings": {
+            "detail_text": "(F) Mfg. By: Suncrest Food Makers.\n    Plot No.N-.75/1, Additional MIDC, Anand Nagar, Ambernath \n    (East), 421506, Taluka, Thane, Maharashtra, India.",
+            "manufacturer_logo": "shopify://shop_images/fssai_logo.png",
+            "manufacturer_license": "<p><strong>Lic. No. 10020022012440</strong></p>"
+          }
+        },
+        "manufacturer_point_p6CtYm": {
+          "type": "manufacturer_point",
+          "settings": {
+            "detail_text": "(G) Mfg.by: Leamak Healthcare (P) Ltd.\n      Sarkhej- Bavla Highway, Matoda, Ahmedabad (Gujarat) - \n      382213",
+            "manufacturer_logo": "shopify://shop_images/fssai_logo.png",
+            "manufacturer_license": "<p><strong>Lic. No. 10012021000219</strong></p>"
+          }
+        },
+        "manufacturer_point_GKHcaq": {
+          "type": "manufacturer_point",
+          "settings": {
+            "detail_text": "(H) Mfg. By: Fillmatic Packaging Systems,\n                      Khasara No. 323, MICHT, Camp road, Selaqui, Dehradun (UK) -248011, India.",
+            "manufacturer_logo": "shopify://shop_images/fssai_logo.png",
+            "manufacturer_license": "<p><strong>Lic. No. 12616005000410&nbsp;</strong></p>"
+          }
+        },
+        "manufacturer_point_eUVQ8C": {
+          "type": "manufacturer_point",
+          "settings": {
+            "detail_text": "(I) Mfg. By: PIOMA INDUSTRIES PVT, LTD.\n                      1/5,Saij, G.I.D.C, Kalol-382725, Gujarat ,India.",
+            "manufacturer_logo": "shopify://shop_images/fssai_logo.png",
+            "manufacturer_license": "<p><strong>Lic. No. 10718009000353&nbsp;</strong></p>"
+          }
+        },
+        "manufacturer_point_fHt96T": {
+          "type": "manufacturer_point",
+          "settings": {
+            "detail_text": "(J) Mfg.by: PIOMA INDUSTRIES PVT, LTD.\n                     1/5,Saij, G.I.D.C, Kalol-382725, Gujarat, India",
+            "manufacturer_logo": "shopify://shop_images/fssai_logo.png",
+            "manufacturer_license": "<p><strong>Lic. No. 10718009000353&nbsp;</strong></p>"
+          }
+        },
+        "manufacturer_point_TrhChP": {
+          "type": "manufacturer_point",
+          "settings": {
+            "detail_text": "(K) Pkd.by; M/s. K.M Industries, Arsodiya Road, Kalol-382721, \n     Gujarat.",
+            "manufacturer_logo": "shopify://shop_images/fssai_logo.png",
+            "manufacturer_license": "<p><strong>Lic. No. 20717009000118&nbsp;</strong></p>"
+          }
+        },
+        "manufacturer_point_qX4i8U": {
+          "type": "manufacturer_point",
+          "settings": {
+            "detail_text": "(L) Mfg. by :  Genius Foods Private Limited.\nPlot No 30, Sector 6B, IIE, Sidcul, Haridwar, Uttarakhand-249403.",
+            "manufacturer_logo": "shopify://shop_images/fssai_logo.png",
+            "manufacturer_license": "<p><strong>Lic. No. 12624006000567</strong></p>"
+          }
         }
       },
       "block_order": [
@@ -121,7 +177,14 @@
         "manufacturer_point_9DTcUk",
         "manufacturer_point_LcMRgD",
         "manufacturer_point_EA4ckc",
-        "manufacturer_point_rPVUek"
+        "manufacturer_point_rPVUek",
+        "manufacturer_point_cXrhBn",
+        "manufacturer_point_p6CtYm",
+        "manufacturer_point_GKHcaq",
+        "manufacturer_point_eUVQ8C",
+        "manufacturer_point_fHt96T",
+        "manufacturer_point_TrhChP",
+        "manufacturer_point_qX4i8U"
       ],
       "name": "Manufacturer Info Section",
       "settings": {
